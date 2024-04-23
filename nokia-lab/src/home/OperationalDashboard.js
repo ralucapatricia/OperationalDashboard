@@ -9,6 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import { useEffect } from "react";
 import Axios from "axios";
+import SearchBar from './SearchBar';
+import { searchFunction} from '../utils/utils';
 
 const columns = [
   { id: "INCIDENT_NUMBER", label: "Incident number", minWidth: 170 },
@@ -180,9 +182,10 @@ export default function TableMainPage() {
    
   return (
     <>
+    <SearchBar setSearchFunction={(event) => searchFunction(event, setRows)} />
      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 700 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" id="myTable">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -205,7 +208,8 @@ export default function TableMainPage() {
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell key={column.id} align={column.align}
+                    >
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
