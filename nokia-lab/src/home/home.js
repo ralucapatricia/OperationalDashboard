@@ -1,15 +1,20 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+
+import Button from '@mui/material/Button';
+import './home.css';
 
 
 const Home = () => {
-  return( 
+  return(
     <>
-     <h1>Homepage</h1>
-      {/* <li><Link to="/">Log-in</Link></li> */}
-      <li><Link to="/grafice">Grafice</Link></li>
-      <li><Link to="/OprationalDashboard">OprationalDashboard</Link></li>
-
+    <div id="page-name" >
+      <h1>Main page</h1>
+    </div >
+    <div id="main-div">
+      <h1 id="header">Welcome, userX! </h1>
+      <Button id="Button" variant="outlined" href="/grafice">Grafice</Button>
+      <Button id="Button" variant="outlined" href="/OperationalDashboard">Dashboard</Button>
+      </div>
     </>
   );
 }
