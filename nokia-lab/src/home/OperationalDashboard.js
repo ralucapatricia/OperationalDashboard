@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import Axios from "axios";
 import SearchBar from './SearchBar';
 import { searchFunction} from '../utils/utils';
+import './OperationalDashboard.css';
+
 
 const columns = [
   { id: "INCIDENT_NUMBER", label: "Incident number", minWidth: 170 },
@@ -169,7 +171,7 @@ export default function TableMainPage() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-    useEffect(() => {
+ useEffect(() => {
       getTickets();
     }, []);
 
@@ -177,6 +179,8 @@ export default function TableMainPage() {
         Axios.get("http://localhost:80/api/tickets/").then(function(response){
         console.log(response.data);
         setRows(response.data);   
+        }).catch(error => {
+          console.error('Error fetching tickets:', error);
         });
     }
    
