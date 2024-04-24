@@ -12,7 +12,7 @@ const Home = () => {
     </div >
     <div id="main-div">
       <h1 id="header">Welcome, userX! </h1>
-      <Button id="Button" variant="outlined" href="/grafice">Grafice</Button>
+      <Button id="Button" variant="outlined" href="/grafice">Graphics</Button>
       <Button id="Button" variant="outlined" href="/OperationalDashboard">Dashboard</Button>
       </div>
     </>
