@@ -1,47 +1,42 @@
-/* Stilizare pentru antetul tabelului */
 .MuiTableHead-root {
-    background-color: #001F67 !important; /* Culoarea închisă pentru antetul tabelului */
-    color: #F4F4F5 !important; /* Culoarea textului din antetul tabelului */
-    font-size: 16px !important; /* Dimensiunea textului în antet */
-    font-weight: 700 !important; /* Grosimea textului în antet */
-    box-shadow: 0px 4px 4px -4px rgba(0, 0, 0, 0.2); /* Îngroșare linie jos antet */
+    background-color: #001F67 !important; 
+    color: #F4F4F5 !important; 
+    font-size: 16px !important; 
+    font-weight: 700 !important; 
+    box-shadow: 0px 4px 4px -4px rgba(0, 0, 0, 0.2); 
   }
-  
-  /* Stilizare pentru toate liniile din tabel, inclusiv prima linie */
+
   .MuiTableRow-root:nth-of-type(even) {
-    background-color: #B8CAF2 !important; /* Culoarea cerută pentru liniile pare */
+    background-color: #B8CAF2 !important; 
   }
   
   .MuiTableRow-root:nth-of-type(odd) {
-    background-color: #F4F4F5 !important; /* Culoarea cerută pentru liniile impare */
+    background-color: #F4F4F5 !important; 
   }
-  
-  /* Stilizare pentru fundalul paginii */
+
   body {
-    background-color: #F4F4F5 !important; /* Culoarea cerută pentru fundalul paginii */
+    background-color: #F4F4F5 !important; 
   }
-  
-  /* Delimitare între coloane */
+
   .MuiTableCell-root {
-    border-bottom: 2px solid #3E68A3; /* Delimitarea de jos a coloanelor */
-    border-right: 1px solid #3E68A3; /* Delimitarea din dreapta a coloanelor */
+    border-bottom: 2px solid #3E68A3; 
+    border-right: 1px solid #3E68A3; 
   }
   
-  /* Stilizare pentru text */
   .MuiTableCell-body {
-    color: #04080F !important; /* Culoarea cerută pentru text */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; /* Font pentru text */
+    color: #04080F !important; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
   }
   
-  /* Stilizare pentru antetul coloanei */
+ 
   .MuiTableCell-head {
-    color: #001F67 !important; /* Culoarea închisă pentru textul din antetul coloanelor */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; /* Font pentru text */
+    color: #001F67 !important; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; 
   }
-  /* Marginile exterioare ale tabelului cu culoarea specificată */
+
 .MuiPaper-root {
-    margin: 20px; /* Marginile exterioare */
-    border: 2px solid #04080F; /* Culoarea pentru bordura exterioară */
+    margin: 20px; 
+    border: 2px solid #04080F; 
 }
 
   
