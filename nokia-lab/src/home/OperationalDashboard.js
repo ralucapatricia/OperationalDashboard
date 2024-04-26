@@ -176,7 +176,7 @@ export default function TableMainPage() {
     }, []);
 
     function getTickets() {
-        Axios.get("http://localhost:80/api/tickets/").then(function(response){
+        Axios.get("http://localhost:80/api/").then(function(response){
         console.log(response.data);
         setRows(response.data);   
         }).catch(error => {

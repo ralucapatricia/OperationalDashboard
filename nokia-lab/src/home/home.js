@@ -6,8 +6,8 @@ import './home.css';
 
 const Home = () => {
   return(
-    <>
-    <div id="page-name" >
+    <div className='bg'>
+    <div id="page-name"  >
       <h1>Main page</h1>
     </div >
     <div id="main-div">
@@ -15,7 +15,7 @@ const Home = () => {
       <Button id="Button" variant="outlined" href="/grafice">Graphics</Button>
       <Button id="Button" variant="outlined" href="/OperationalDashboard">Dashboard</Button>
       </div>
-    </>
+    </div>
   );
 }
 export default Home;

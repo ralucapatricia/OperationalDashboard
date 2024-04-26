@@ -18,15 +18,21 @@
   display: block;
   margin: auto;
   margin-bottom: 10px;
+  transition: background-color 0.3s;
+}
+
+#Button:hover {
+  color: var(--primary);
+  background-color: var(--marine);
 }
 
 #page-name{
-  color:var(--secondary);
+  color:var(--my_white);
   margin-left: 15px;
 }
 
 #header{
-  color:var(--secondary);
+  color:var(--my_white);
   text-align: center;
 }
 
@@ -36,9 +42,20 @@
   border-color: #001f67;
   margin: auto;
   
-  justify-content: center; /* Horizontally center items */
+  justify-content: center; 
   margin-top: 150px;
-  align-items: center; /* Vertically center items */
-  
+  align-items: center;
 }
 
+.bg {
+  margin: 0;
+  padding: 0;
+  background-image: url('D:\Faculta\NOKIA\test\nokia-lab\nokia-lab\public\img\bg.jpg'); 
+  background-size: cover;
+  background-position: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
