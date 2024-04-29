@@ -33,9 +33,7 @@
 #main-div{
   width: 30%;
   height: 10%;
-  border-color: #001f67;
   margin: auto;
-  
   justify-content: center; /* Horizontally center items */
   margin-top: 150px;
   align-items: center; /* Vertically center items */
