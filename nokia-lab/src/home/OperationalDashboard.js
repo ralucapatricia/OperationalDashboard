@@ -12,7 +12,7 @@ import Axios from "axios";
 import SearchBar from './SearchBar';
 import { searchFunction} from '../utils/utils';
 import './OperationalDashboard.css';
-
+import FilterOptions from "./FilterOptions";
 
 const columns = [
   { id: "INCIDENT_NUMBER", label: "Incident number", minWidth: 170 },
@@ -158,27 +158,37 @@ const columns = [
   },
 ];
 
-export default function TableMainPage() {
+export default function OperationalDashboard() {
     const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-
+    const [filteredData, setFilteredData] = useState([]);
+    const [enableFilters, setEnableFilters] = useState(false);
+  
     const handleChangePage = (event, newPage) => {
     setPage(newPage);
     };
-
+ 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
- useEffect(() => {
+  useEffect(() => {
       getTickets();
-    }, []);
+  }, [rows]);
 
-    function getTickets() {
+  useEffect(() => {
+    if (filteredData.length > 0) {
+        setEnableFilters(true);
+    } else {
+        setEnableFilters(false);
+    }
+}, [filteredData]);
+
+  function getTickets() {
         Axios.get("http://localhost:80/api/").then(function(response){
-        console.log(response.data);
-        setRows(response.data);   
+        setRows(response.data);  
+        // console.log(rows); 
         }).catch(error => {
           console.error('Error fetching tickets:', error);
         });
@@ -186,7 +196,8 @@ export default function TableMainPage() {
    
   return (
     <>
-    <SearchBar setSearchFunction={(event) => searchFunction(event, setRows)} />
+    <SearchBar setSearchFunction={(event) => searchFunction(event, setRows)}  />
+    <div style={{ padding: '20px' }}><FilterOptions setFilteredData={setFilteredData} /> </div>
      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table stickyHeader aria-label="sticky table" id="myTable">
@@ -204,16 +215,14 @@ export default function TableMainPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
+              {(enableFilters  ? filteredData : rows)
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align}
-                    >
+                        <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
@@ -221,9 +230,8 @@ export default function TableMainPage() {
                       );
                     })}
                   </TableRow>
-                );
-              })}
-          </TableBody>
+                ))}
+            </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
