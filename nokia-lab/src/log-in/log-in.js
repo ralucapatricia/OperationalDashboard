@@ -14,11 +14,12 @@ const Login = () => {
           <div id="glass">
             <div id='inner'>
               <h1 id="h1">Log In</h1>
-              <form>
+              <form action='https://localhost/Ac-labs/nokia/nokia-lab/nokia-lab/src/log-in/log-in.php' method='POST'>
               <input type="email" placeholder="Enter your Email" name="email" required id='ps'></input><br></br>
               <input type="password" placeholder="Enter Password" name="psw" required id='ps'></input>
+              <input type="submit"  name='' id='btn' value='Log-in'></input>
               </form>
-              <button id='btn'>Login</button>
+              
               <p id="whitep2">Don't have an account?</p>
               <Link to="/register" id='register'>Sign up</Link>
               <nav>
@@ -37,4 +38,3 @@ const Login = () => {
 };
 
 export default Login;
-
