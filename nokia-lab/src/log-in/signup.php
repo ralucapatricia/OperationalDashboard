@@ -13,10 +13,10 @@
         if(!empty($email) && !empty($password) && !empty($telephone) && !empty($birth_day) && !empty($user_name) && !is_numeric($email) && is_numeric($telephone)){
             $query = "insert into users (USERNAME, EMAIL, PASSWORD, PHONE_NUMBER, BIRTH_DATE) values('$user_name','$email','$password','$telephone','$birth_day')";
             mysqli_query($conn,$query);
-            echo "success";
+            echo '<script>alert("success")</script>';
         }
         else{
-            echo "please enter valid information";
+            echo '<script>alert("please enter valid information")</script>';
         }
     }
 ?>
