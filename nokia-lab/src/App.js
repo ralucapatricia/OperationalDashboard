@@ -4,7 +4,7 @@ import Home from './home/home';
 import Login from './log-in/log-in';
 import Grafice from './grafice/grafice';
 import Register from './log-in/register';
-import OperationalDashboard from './home/OperationalDashboard';
+import OperationalDashboard from './home/operational-dashboard/OperationalDashboard';
 
 function App() {
   return (
