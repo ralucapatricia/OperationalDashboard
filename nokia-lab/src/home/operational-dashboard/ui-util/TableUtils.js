@@ -1,4 +1,11 @@
 export const columns = [  
+  {
+    id: "TIME_REMAINING",
+    label: "Time remaining",
+    minWidth: 170,
+    align: "right",
+    format: (value) => value.toLocaleString("en-US"),
+  },
     { id: "INCIDENT_NUMBER", label: "Incident number", minWidth: 170 },
     { id: "SERVICE", label: "Service", minWidth: 100 },
     {
