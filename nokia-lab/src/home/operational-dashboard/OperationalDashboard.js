@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -21,7 +21,6 @@ export default function OperationalDashboard() {
   const [filteredData, setFilteredData] = useState([]);
   const [enableFilters, setEnableFilters] = useState(false);
   const tableRef = useRef(null);
-
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: "tickets",
@@ -57,49 +56,6 @@ export default function OperationalDashboard() {
     }
   }
 
-  function RemainingTime() {
-    setRows((prevRows) => {
-      const updatedRows = prevRows.map((row) => ({
-        ...row,
-        timeRemaining: getRemainingTime(row.REQUIRED_RESOLUTION_DATETIME),
-      }));
-      return updatedRows;
-    });
-    setFilteredData((prevFilteredData) => {
-      const updatedFilteredData = prevFilteredData.map((row) => ({
-        ...row,
-        timeRemaining: getRemainingTime(row.REQUIRED_RESOLUTION_DATETIME),
-      }));
-      return updatedFilteredData;
-    });
-  }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      RemainingTime();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  function getRemainingTime(dateValue) {
-    const date = Math.floor(new Date().getTime() / 1000);
-    const date2 = Math.floor(new Date(dateValue).getTime() / 1000);
-    const diff = date2 - date;
-    if (diff <= 0) {
-      return "CLOSED";
-    } else {
-      const days = Math.floor(diff / 86400);
-      const hours = Math.floor((diff % 86400) / 3600);
-      const minutes = Math.floor((diff % 3600) / 60);
-      const seconds = diff % 60;
-      const daysStr = days < 10 ? "0" + days : days;
-      const hoursStr = hours < 10 ? "0" + hours : hours;
-      const minutesStr = minutes < 10 ? "0" + minutes : minutes;
-      const secondsStr = seconds < 10 ? "0" + seconds : seconds;
-      return `${daysStr} days, ${hoursStr}:${minutesStr}:${secondsStr}`;
-    }
-  }
-
   return (
     <>
       <ToolBar onExportClick={onDownload} />
@@ -132,15 +88,20 @@ export default function OperationalDashboard() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.id === "TIME_REMAINING"
-                          ? row.timeRemaining
-                          : column.format && typeof row[column.id] === "number"
-                          ? column.format(row[column.id])
-                          : row[column.id]}
-                      </TableCell>
-                    ))}
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.id === "TIME_REMAINING" && row["days"] < 0
+                            ? "CLOSED"
+                            : column.id === "TIME_REMAINING"
+                            ? `${row["days"]} days, ${row["hours"]}:${row["minutes"]}:${row["seconds"]}`
+                            : column.format && typeof value === "number"
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })}
                   </TableRow>
                 ))}
             </TableBody>
