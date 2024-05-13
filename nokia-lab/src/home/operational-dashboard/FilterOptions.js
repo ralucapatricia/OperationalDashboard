@@ -290,7 +290,7 @@ export default function FilterOptions({ setFilteredData }) {
         renderInput={(params) => <TextField {...params} label="SLA status" />}
       />
       {showPopup && (
-        <NoResultsPopup>
+        <NoResultsPopup message={'No results found!'}>
           <div class="btn-container">
             <button className="btn" onClick={CloseButtonHandler}>
               OK
