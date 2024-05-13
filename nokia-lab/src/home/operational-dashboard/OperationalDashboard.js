@@ -16,6 +16,7 @@ import { useDownloadExcel } from "react-export-table-to-excel";
 import { getTickets } from "./service/OperationalDashboardService";
 import { columns } from "./ui-util/TableUtils";
 import TabsBar from "./TabsBar";
+
 // import NoResultsPopup from "./NoResultsPopup";
 
 export default function OperationalDashboard() {
@@ -26,7 +27,9 @@ export default function OperationalDashboard() {
   const [enableFilters, setEnableFilters] = useState(false);
   const [totalTickets, setTotalTickets] = useState(0);
   const [loading, setLoading] = useState(true);
-  
+  const [closed, setClosed] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [all, setAll] = useState(true);
   // const [error, setError] = useState();
   const tableRef = useRef(null);
   const { onDownload } = useDownloadExcel({
@@ -45,7 +48,7 @@ export default function OperationalDashboard() {
 
   useEffect(() => {
     fetchTicketsAndSetRows();
-  }, []);
+  }, [closed, open]);
 
   useEffect(() => {
     if (filteredData.length > 0) {
@@ -59,17 +62,25 @@ export default function OperationalDashboard() {
     setLoading(true);
     try {
       const tickets = await getTickets();
-      setRows(tickets);
-      setTotalTickets(tickets.length);
+      let filteredTickets = [];
+  
+      if (all) {
+        filteredTickets = tickets;
+      } else if (open) {
+        filteredTickets = tickets.filter(ticket => ticket.days > 0);
+      } else if (closed) {
+        filteredTickets = tickets.filter(ticket => ticket.days < 0);
+      }
+  
+      setRows(filteredTickets);
+      setTotalTickets(filteredTickets.length);
     } catch (err) {
       console.error("Error fetching tickets: ", err);
-      // setError("Error fetching tickets!");
     } finally {
-      if (rows) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   }
+  
 
   // if (error && !loading) {
   //   console.log("intra");
@@ -83,7 +94,48 @@ export default function OperationalDashboard() {
       ) : (
         <>
           <ToolBar onExportClick={onDownload} />
-          <TabsBar/>
+          <TabsBar currentTab={all ? 1 : open ? 2 : closed ? 3 : 1} handleChangeTab={(event, newValue) => {
+    if (newValue === 1) {
+      setAll(true);
+      setOpen(false);
+      setClosed(false);
+    } else if (newValue === 2) {
+      setOpen(true);
+      setAll(false);
+      setClosed(false);
+    } else if (newValue === 3) {
+      setClosed(true);
+      setAll(false);
+      setOpen(false);
+    }
+}} />
+          {/* <button
+            onClick={() => {
+              setAll(true);
+              setOpen(false);
+              setClosed(false);
+            }}
+          >
+            ALL
+          </button>
+          <button
+            onClick={() => {
+              setOpen(true);
+              setAll(false);
+              setClosed(false);
+            }}
+          >
+            OPEN
+          </button>
+          <button
+            onClick={() => {
+              setClosed(true);
+              setAll(false);
+              setOpen(false);
+            }}
+          >
+            CLOSED
+          </button> */}
           <div style={{ padding: "20px" }}>
             <FilterOptions setFilteredData={setFilteredData} />
           </div>
