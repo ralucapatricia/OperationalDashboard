@@ -32,6 +32,7 @@ export default function OperationalDashboard() {
   const [all, setAll] = useState(true);
   // const [error, setError] = useState();
   const tableRef = useRef(null);
+  const [filterType, setFilterType] = useState('all');
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: "tickets",
@@ -56,36 +57,37 @@ export default function OperationalDashboard() {
     } else {
       setEnableFilters(false);
     }
+    setTotalTickets(filteredData.length);
   }, [filteredData]);
 
   async function fetchTicketsAndSetRows() {
     setLoading(true);
     try {
       const tickets = await getTickets();
-      let filteredTickets = [];
-  
-      if (all) {
-        filteredTickets = tickets;
-      } else if (open) {
-        filteredTickets = tickets.filter(ticket => ticket.days > 0);
-      } else if (closed) {
-        filteredTickets = tickets.filter(ticket => ticket.days < 0);
-      }
-  
-      setRows(filteredTickets);
-      setTotalTickets(filteredTickets.length);
+      setRows(tickets);
+      setTotalTickets(tickets.length);
     } catch (err) {
       console.error("Error fetching tickets: ", err);
     } finally {
       setLoading(false);
     }
   }
-  
 
-  // if (error && !loading) {
-  //   console.log("intra");
-  //   return <NoResultsPopup message={error} />;
-  // }
+useEffect(() => {
+  let filteredTickets = []; 
+
+  if (all) {
+    filteredTickets = rows;
+  } else if (open) {
+    filteredTickets = rows.filter((ticket) => ticket.days > 0);
+  } else if (closed) {
+    filteredTickets = rows.filter((ticket) => ticket.days < 0);
+  }
+
+  setFilteredData(filteredTickets);
+
+}, [all, open, closed, rows]);
+
 
   return (
     <>
@@ -94,53 +96,33 @@ export default function OperationalDashboard() {
       ) : (
         <>
           <ToolBar onExportClick={onDownload} />
-          <TabsBar currentTab={all ? 1 : open ? 2 : closed ? 3 : 1} handleChangeTab={(event, newValue) => {
-    if (newValue === 1) {
-      setAll(true);
-      setOpen(false);
-      setClosed(false);
-    } else if (newValue === 2) {
-      setOpen(true);
-      setAll(false);
-      setClosed(false);
-    } else if (newValue === 3) {
-      setClosed(true);
-      setAll(false);
-      setOpen(false);
-    }
-}} />
-          {/* <button
-            onClick={() => {
-              setAll(true);
-              setOpen(false);
-              setClosed(false);
+          <TabsBar
+            currentTab={all ? 1 : open ? 2 : closed ? 3 : 1}
+            handleChangeTab={(event, newValue) => {
+              if (newValue === 1) {
+                setFilterType('all');
+                setAll(true);
+                setOpen(false);
+                setClosed(false);
+              } else if (newValue === 2) {
+                setFilterType('open');
+                setOpen(true);
+                setAll(false);
+                setClosed(false);
+              } else if (newValue === 3) {
+                setFilterType('closed');
+                setClosed(true);
+                setAll(false);
+                setOpen(false);
+              }
+              setPage(0); 
             }}
-          >
-            ALL
-          </button>
-          <button
-            onClick={() => {
-              setOpen(true);
-              setAll(false);
-              setClosed(false);
-            }}
-          >
-            OPEN
-          </button>
-          <button
-            onClick={() => {
-              setClosed(true);
-              setAll(false);
-              setOpen(false);
-            }}
-          >
-            CLOSED
-          </button> */}
+          />
           <div style={{ padding: "20px" }}>
-            <FilterOptions setFilteredData={setFilteredData} />
+            <FilterOptions setFilteredData={setFilteredData} filterType={filterType} />
           </div>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <TableContainer sx={{ maxHeight: 580 }}>
+            <TableContainer sx={{ maxHeight: 600 }}>
               <Table
                 stickyHeader
                 aria-label="sticky table"

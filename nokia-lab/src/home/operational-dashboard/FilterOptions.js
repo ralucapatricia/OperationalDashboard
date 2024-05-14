@@ -23,7 +23,7 @@ const filterOptions = createFilterOptions({
   stringify: (option) => option.title,
 });
 
-export default function FilterOptions({ setFilteredData }) {
+export default function FilterOptions({ setFilteredData, filterType }) {
   const [filters, setFilters] = useState({
     submitter: null,
     assignedGroup: null,
@@ -141,7 +141,14 @@ export default function FilterOptions({ setFilteredData }) {
       } else {
         setShowPopup(false);
       }
-      setFilteredData(response.data);
+      if(filterType === 'all') {
+        setFilteredData(response.data);
+      } else if(filterType === 'open') {
+        setFilteredData(response.data.filter((ticket) => ticket.days > 0));
+      } else {
+        setFilteredData(response.data.filter((ticket) => ticket.days < 0));
+      }
+      
     } catch (error) {
       console.error("Error fetching filtered data:", error);
     }
