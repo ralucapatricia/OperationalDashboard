@@ -1,29 +1,39 @@
 <?php
-    session_start();
+session_start();
 
-    include("db.php");
+include("db.php");
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        
-        $email = $_POST['email'];
-        $password = $_POST['psw'];
+header("Access-Control-Allow-Origin: *");
 
-        if(!empty($email) && !empty($password) && !is_numeric($email)){
-            $query = "SELECT * FROM users WHERE EMAIL = '$email' LIMIT 1";
-            $result = mysqli_query($conn, $query);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    $email = $_POST['email'];
+    $password = $_POST['psw'];
 
-            if($result){
-                if(mysqli_num_rows($result) > 0){
-                    $user_data = mysqli_fetch_assoc($result);
-                    if($user_data['PASSWORD'] == $password){
-                        echo '<script>alert("success")</script>';
-                        header('Location: log-in.js');
-                    }
+    if(!empty($email) && !empty($password) && !is_numeric($email)){
+        $query = "SELECT * FROM users WHERE EMAIL = ?";
+        $stmt = mysqli_prepare($conn, $query);
 
-                }else {
-                    echo '<script>alert("User not found")</script>';
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "s", $email);
+            
+            mysqli_stmt_execute($stmt);
+            
+            $result = mysqli_stmt_get_result($stmt);
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                $user_data = mysqli_fetch_assoc($result);
+                if ($user_data['PASSWORD'] == $password) {
+                    echo "Success";
+                } else {
+                    echo "Incorrect password";
                 }
+            } else {
+                echo "User not found";
             }
-        } 
+            
+            mysqli_stmt_close($stmt);
+        }
     }
+}
 ?>
