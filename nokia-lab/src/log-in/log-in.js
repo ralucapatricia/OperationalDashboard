@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-      const response = await axios.post('https://localhost/Ac-labs/nokia/nokia-lab/nokia-lab/src/log-in/log-in.php', formData);
+      const response = await axios.post('http://localhost/Ac-labs/nokia/nokia-lab/nokia-lab/src/log-in/log-in.php', formData);
       if (response.data === 'Success') {
         navigate('/homepage');
       } else {
