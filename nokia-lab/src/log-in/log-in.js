@@ -42,10 +42,6 @@ const Login = () => {
               <p id="whitep2">Don't have an account?</p>
               <Link to="/register" id='register'>Sign up</Link>
               <nav>
-                <ul>
-                  <li><Link to="/homepage">Homepage</Link></li>
-                  <li><Link to="/grafice">Grafice</Link></li>
-                </ul>
               </nav>
             </div>
           </div>

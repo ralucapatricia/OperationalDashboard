@@ -43,7 +43,11 @@
     letter-spacing: 1px;
 }
 #inner{
-    padding: 30px;
+    position: absolute;
+    top: 46%;
+    left: 10%;
+    transform: translateY(-50%);
+    padding-left: 30px;
 }
 #btn{
     display: inline-block;
@@ -58,7 +62,7 @@
     height: 5vh;
     transition: ease .20s;
     cursor: pointer;
-    margin-top: 4%;
+    margin-top: 8%;
     margin-left: 10%;
 }
 #btn:hover{
@@ -97,15 +101,42 @@
     box-sizing: border-box;
 }
 #ps1{
-    width: 50%;
+    width: 70%;
     padding: 12px 20px;
     margin-left: 13%;
-    margin-top: 1%;
+
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
-
+@media only screen and (max-height: 1000px) and (min-height:801px) {
+    #glass {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 65%;
+        height: 52vh;
+    }
+    #glass2 {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 65%;
+        height: 55vh;
+    }
+}
+@media only screen and (max-height: 800px)  {
+    #glass {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 70%;
+        height: 55vh;
+    }
+    #glass2 {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 70%;
+        height: 58vh;
+    }
+}
 @media only screen and (max-width: 600px) {
     #half1{
         width: 80vw;
@@ -113,7 +144,9 @@
     #glass, #glass2{
         margin-left: 5%;
         margin-right: 5%;
-        height: auto;
+    }
+    #inner{
+        left:0%
     }
     #h1{
         font-size: 5vw;

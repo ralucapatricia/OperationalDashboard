@@ -37,15 +37,11 @@ const Register = () => {
                 <input type="email" placeholder="Enter your Email" name="email" required id='ps1'></input><br></br>
                 <input type="password" placeholder="Enter Password" name="psw" required id='ps1'></input><br></br>
                 <input type="tel" placeholder="Enter Phone Number" name="tel" required id='ps1'></input><br></br>
-                <input type="date" placeholder="Enter Birth Date" name="date" required id='ps1'></input><br></br>
+                <input type="date" placeholder="Enter Birth Date" name="date" required id='ps1' max='05-15-2024'></input><br></br>
                 <input type="submit" placeholder='Register' name='' id='btn' value='Register'></input>
               </form>
               
               <nav>
-                <ul>
-                  <li><Link to="/homepage">Homepage</Link></li>
-                  <li><Link to="/grafice">Grafice</Link></li>
-                </ul>
               </nav>
             </div>
           </div>
