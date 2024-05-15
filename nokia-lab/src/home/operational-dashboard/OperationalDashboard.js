@@ -17,7 +17,7 @@ import { getTickets } from "./service/OperationalDashboardService";
 import { columns } from "./ui-util/TableUtils";
 import TabsBar from "./TabsBar";
 
-// import NoResultsPopup from "./NoResultsPopup";
+import NoResultsPopup from "./NoResultsPopup";
 
 export default function OperationalDashboard() {
   const [rows, setRows] = useState([]);
@@ -30,9 +30,9 @@ export default function OperationalDashboard() {
   const [closed, setClosed] = useState(false);
   const [open, setOpen] = useState(false);
   const [all, setAll] = useState(true);
-  // const [error, setError] = useState();
+  const [error, setError] = useState(null);
   const tableRef = useRef(null);
-  const [filterType, setFilterType] = useState('all');
+  const [filterType, setFilterType] = useState("all");
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: "tickets",
@@ -66,28 +66,30 @@ export default function OperationalDashboard() {
       const tickets = await getTickets();
       setRows(tickets);
       setTotalTickets(tickets.length);
+      setError(null);
     } catch (err) {
-      console.error("Error fetching tickets: ", err);
+      setError("Database error!");
     } finally {
       setLoading(false);
     }
   }
 
-useEffect(() => {
-  let filteredTickets = []; 
+  useEffect(() => {
+    let filteredTickets = [];
 
-  if (all) {
-    filteredTickets = rows;
-  } else if (open) {
-    filteredTickets = rows.filter((ticket) => ticket.days > 0);
-  } else if (closed) {
-    filteredTickets = rows.filter((ticket) => ticket.days < 0);
+    if (all) {
+      filteredTickets = rows;
+    } else if (open) {
+      filteredTickets = rows.filter((ticket) => ticket.days > 0);
+    } else if (closed) {
+      filteredTickets = rows.filter((ticket) => ticket.days < 0);
+    }
+    setFilteredData(filteredTickets);
+  }, [all, open, closed, rows]);
+
+  if (error) {
+    return <NoResultsPopup message={error} />;
   }
-
-  setFilteredData(filteredTickets);
-
-}, [all, open, closed, rows]);
-
 
   return (
     <>
@@ -100,26 +102,29 @@ useEffect(() => {
             currentTab={all ? 1 : open ? 2 : closed ? 3 : 1}
             handleChangeTab={(event, newValue) => {
               if (newValue === 1) {
-                setFilterType('all');
+                setFilterType("all");
                 setAll(true);
                 setOpen(false);
                 setClosed(false);
               } else if (newValue === 2) {
-                setFilterType('open');
+                setFilterType("open");
                 setOpen(true);
                 setAll(false);
                 setClosed(false);
               } else if (newValue === 3) {
-                setFilterType('closed');
+                setFilterType("closed");
                 setClosed(true);
                 setAll(false);
                 setOpen(false);
               }
-              setPage(0); 
+              setPage(0);
             }}
           />
           <div style={{ padding: "20px" }}>
-            <FilterOptions setFilteredData={setFilteredData} filterType={filterType} />
+            <FilterOptions
+              setFilteredData={setFilteredData}
+              filterType={filterType}
+            />
           </div>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
             <TableContainer sx={{ maxHeight: 600 }}>
