@@ -150,6 +150,46 @@ export const columns = [
     },
   ];
 
+  export const incidentNumberOptions = [
+    { title: 1 },
+    { title: 2 },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+  ];
+
+  export const serviceOptions = [
+    { title: "Network" },
+    { title: "IT Support" },
+    { title: "Maintenance" },
+    { title: "Data Services" },
+  ];
+
+  export const priorityOptions = [
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+  ];
+
+  export const pendingDurationOptions = [
+    { title: "90" },
+    { title: "80" },
+    { title: "110" },
+  ];
+
+  export const resolutionCategoryOptions = [
+    { title: "Software Issue" },
+    { title: "Connectivity" },
+    { title: "Hardware" },
+  ];
+
+  export const statusOptions = [
+    { title: "Assigned" },
+    { title: "Pending" },
+    { title: "In Progress" },
+  ];
+
  export const submitterOptions = [
     { title: "John Smith" },
     { title: "Emily R." },
