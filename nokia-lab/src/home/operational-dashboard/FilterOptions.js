@@ -384,10 +384,14 @@ export default function FilterOptions({ setFilteredData }) {
         }}
         renderInput={(params) => <TextField {...params} label="Priority" />}
       />
-      <ClearableProp value={submitDate} handleDateChange={handleSubmitDateChange} />
-      <ClearableProp value={resolvedDate} handleDateChange={handleResolvedDateChange} />
-      <ClearableProp value={requiredResolutionDataTime} handleDateChange={handleRequiredDateChange} />
-      <ClearableProp value={endOfImpact} handleDateChange={handleEndOfImpactDateChange} />
+      <ClearableProp value={submitDate} handleDateChange={handleSubmitDateChange} 
+      label="Submit Date"/>
+      <ClearableProp value={resolvedDate} handleDateChange={handleResolvedDateChange} 
+      label="Resolved Date"/>
+      <ClearableProp value={requiredResolutionDataTime} handleDateChange={handleRequiredDateChange} 
+      label="Required Resolution Date"/>
+      <ClearableProp value={endOfImpact} handleDateChange={handleEndOfImpactDateChange}
+      label="End Of Impact Date" />
       <Autocomplete
         id="PendingDuration"
         options={pendingDurationOptions}
@@ -531,7 +535,7 @@ export default function FilterOptions({ setFilteredData }) {
           <TextField {...params} label="Pending Minutes" />
         )}
       />
-      <ClearableProp value={closeDate} handleDateChange={handleDateChange} />
+      <ClearableProp value={closeDate} handleDateChange={handleDateChange} label="Close Date"/>
       <Autocomplete
         id="ResolveSLA"
         options={resolveSLAOptions}

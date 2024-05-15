@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 
-export default function ClearableProp({ handleDateChange, value }) {
+export default function ClearableProp({ handleDateChange, value, label }) {
   const [cleared, setCleared] = useState(false);   
   useEffect(() => {
     if (cleared) {
@@ -39,7 +39,8 @@ export default function ClearableProp({ handleDateChange, value }) {
             slotProps={{
               field: { clearable: true, onClear: () => setCleared(true) },
             }}
-            label="Close Date"
+            label={label}
+            
           />
         </DemoItem>
 
