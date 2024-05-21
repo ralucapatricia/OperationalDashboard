@@ -157,38 +157,69 @@ export const columns = [
   },
 ];
 
-export const submitterOptions = [
-  { title: "John Smith" },
-  { title: "Emily R." },
-  { title: "Michael B." },
-];
+  export const serviceOptions = [
+    { title: "Network" },
+    { title: "IT Support" },
+    { title: "Maintenance" },
+  ];
 
-export const assignedGroupOptions = [
-  { title: "Support Team A" },
-  { title: "Network Team" },
-  { title: "Maintenance Crew" },
-];
-export const AssigneeOptions = [
-  { title: "Alice Johnson" },
-  { title: "Bob Williams" },
-  { title: "Carl S." },
-];
-export const projectOptions = [
-  { title: "Project Gamma" },
-  { title: "Project Kappa" },
-  { title: "Project Lambda" },
-];
-export const resolveTimeOptions = [
-  { title: "45" },
-  { title: "60" },
-  { title: "35" },
-];
+  export const priorityOptions = [
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+  ];
 
-export const pendingMinutesOptions = [
-  { title: "210" },
-  { title: "300" },
-  { title: "190" },
-];
-export const resolveSLAOptions = [{ title: "Yes" }, { title: "No" }];
-export const respondSLAOptions = [{ title: "Yes" }, { title: "No" }];
-export const SLAstatusOptions = [{ title: "InSLA" }, { title: "OutSLA" }];
+  export const pendingDurationOptions = [
+    { title: "90" },
+    { title: "80" },
+    { title: "110" },
+  ];
+
+  export const resolutionCategoryOptions = [
+    { title: "Software Issue" },
+    { title: "Connectivity" },
+    { title: "Hardware" },
+    { title: "Bug Report" },
+    
+  ];
+
+  export const statusOptions = [
+    { title: "Assigned" },
+    { title: "Pending" },
+    { title: "In Progress" },
+    { title: "Resolved" },
+  
+  ];
+
+ export const submitterOptions = [
+    { title: "John Smith" },
+    { title: "Emily R." },
+    { title: "Michael B." },
+  ];
+  
+ export const assignedGroupOptions = [
+    { title: "Support Team A" },
+    { title: "Network Team" },
+    { title: "Maintenance Crew" },
+  ];
+ export  const AssigneeOptions = [
+    { title: "Alice Johnson" },
+    { title: "Bob Williams" },
+    { title: "Carl S." },
+  ];
+ export const projectOptions = [
+    { title: "Project Gamma" },
+    { title: "Project Kappa" },
+    { title: "Project Lambda" },
+  ];
+ export const resolveTimeOptions = [{ title: "45" }, { title: "60" }, { title: "35" }];
+  
+ export const pendingMinutesOptions = [
+    { title: "210" },
+    { title: "300" },
+    { title: "190" },
+  ];
+ export const resolveSLAOptions = [{ title: "Yes" }, { title: "No" }];
+ export const respondSLAOptions = [{ title: "Yes" }, { title: "No" }];
+ export const SLAstatusOptions = [{ title: "InSLA" }, { title: "OutSLA" }];
+  

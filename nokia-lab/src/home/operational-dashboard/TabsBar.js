@@ -47,7 +47,7 @@ export default function TabsBar({ currentTab, handleChangeTab }) {
       variant="fullWidth"
     >
       <StyledTab value={1} label="ALL TICKETS" />
-      <StyledTab value={2} label="OPEN" />
+      <StyledTab value={2} label="BACKLOG" />
       <StyledTab value={3} label="CLOSED" />
     </StyledTabs>
   );

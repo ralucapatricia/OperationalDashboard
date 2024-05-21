@@ -19,6 +19,9 @@ import TabsBar from "./TabsBar";
 
 import NoResultsPopup from "./NoResultsPopup";
 
+const databaseErrorMessage =
+  "The database is currently unavailable 😞 Please try again later.";
+
 export default function OperationalDashboard() {
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -57,8 +60,8 @@ export default function OperationalDashboard() {
     } else {
       setEnableFilters(false);
     }
-    setTotalTickets(filteredData.length);
-  }, [filteredData]);
+    setTotalTickets(filteredData.length); 
+  }, [filteredData, rows]);
 
   async function fetchTicketsAndSetRows() {
     setLoading(true);
@@ -67,8 +70,9 @@ export default function OperationalDashboard() {
       setRows(tickets);
       setTotalTickets(tickets.length);
       setError(null);
-    } catch (err) {
-      setError("Database error!");
+      console.log("merge");
+    } catch (error) {
+      setError(databaseErrorMessage);
     } finally {
       setLoading(false);
     }
@@ -80,14 +84,14 @@ export default function OperationalDashboard() {
     if (all) {
       filteredTickets = rows;
     } else if (open) {
-      filteredTickets = rows.filter((ticket) => ticket.days > 0);
+      filteredTickets = rows.filter((ticket) =>  ticket.is_pending === true && ticket.days > 0);
     } else if (closed) {
       filteredTickets = rows.filter((ticket) => ticket.days < 0);
     }
     setFilteredData(filteredTickets);
   }, [all, open, closed, rows]);
 
-  if (error) {
+  if (error && !loading) {
     return <NoResultsPopup message={error} />;
   }
 
@@ -127,7 +131,7 @@ export default function OperationalDashboard() {
             />
           </div>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <TableContainer sx={{ maxHeight: 600 }}>
+            <TableContainer sx={{ maxHeight: 540 }}>
               <Table
                 stickyHeader
                 aria-label="sticky table"
