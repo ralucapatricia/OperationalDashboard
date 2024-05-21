@@ -1,0 +1,10 @@
+.loading-message {
+    display: flex;
+    align-items: center;  
+    justify-content: center; 
+    text-align: center; 
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #001F67;
+}
