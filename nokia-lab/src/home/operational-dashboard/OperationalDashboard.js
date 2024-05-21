@@ -8,6 +8,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import ToolBar from "./ToolBar";
+import EditIcon from "@mui/icons-material/Edit";
+
 import "./OperationalDashboard.css";
 import LoadingSpinner from "../../util/LoadingSpinner";
 import TicketCount from "./TicketCount";
@@ -34,6 +36,7 @@ export default function OperationalDashboard() {
   const [open, setOpen] = useState(false);
   const [all, setAll] = useState(true);
   const [error, setError] = useState(null);
+  const [removeOptions, setRemoveOptions] = useState(false);
   const tableRef = useRef(null);
   const [filterType, setFilterType] = useState("all");
   const { onDownload } = useDownloadExcel({
@@ -60,7 +63,7 @@ export default function OperationalDashboard() {
     } else {
       setEnableFilters(false);
     }
-    setTotalTickets(filteredData.length); 
+    setTotalTickets(filteredData.length);
   }, [filteredData, rows]);
 
   async function fetchTicketsAndSetRows() {
@@ -73,6 +76,7 @@ export default function OperationalDashboard() {
       console.log("merge");
     } catch (error) {
       setError(databaseErrorMessage);
+      setRemoveOptions(true);
     } finally {
       setLoading(false);
     }
@@ -84,7 +88,9 @@ export default function OperationalDashboard() {
     if (all) {
       filteredTickets = rows;
     } else if (open) {
-      filteredTickets = rows.filter((ticket) =>  ticket.is_pending === true && ticket.days > 0);
+      filteredTickets = rows.filter(
+        (ticket) => ticket.is_pending === true && ticket.days > 0
+      );
     } else if (closed) {
       filteredTickets = rows.filter((ticket) => ticket.days < 0);
     }
@@ -92,7 +98,12 @@ export default function OperationalDashboard() {
   }, [all, open, closed, rows]);
 
   if (error && !loading) {
-    return <NoResultsPopup message={error} />;
+    return (
+      <>
+        <ToolBar removeOptions={removeOptions} />
+        <NoResultsPopup message={error} />
+      </>
+    );
   }
 
   return (
