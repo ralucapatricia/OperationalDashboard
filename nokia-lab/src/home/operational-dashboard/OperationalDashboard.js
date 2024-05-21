@@ -101,7 +101,13 @@ export default function OperationalDashboard() {
     return (
       <>
         <ToolBar removeOptions={removeOptions} />
-        <NoResultsPopup message={error} />
+        <NoResultsPopup message={error}>
+          <div class="btn-container">
+            <button className="btn" onClick={fetchTicketsAndSetRows}>
+              Retry
+            </button>
+          </div>
+        </NoResultsPopup>
       </>
     );
   }
