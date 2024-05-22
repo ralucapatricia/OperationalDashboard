@@ -35,7 +35,7 @@ const Register = () => {
           <div id="glass2">
             <div id="inner">
               <h1 id="h1">Register</h1>
-              <form onSubmit={handleRegister}>
+              <form onSubmit={handleRegister} className="form">
                 <input
                   type="text"
                   placeholder="Enter Username"

@@ -33,7 +33,7 @@ const Login = () => {
           <div id="glass">
             <div id="inner">
               <h1 id="h1">Log In</h1>
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleLogin} className="form">
                 <input
                   type="email"
                   placeholder="Enter your Email"
