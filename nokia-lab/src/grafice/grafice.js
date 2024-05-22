@@ -35,7 +35,7 @@ const Grafice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost/api/index.php");
+        const response = await fetch("http://localhost/api/charts/");
         const jsonData = await response.json();
         
         setSlaData([
