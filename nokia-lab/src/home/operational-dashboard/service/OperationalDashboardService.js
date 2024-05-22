@@ -1,7 +1,6 @@
-import Axios from 'axios';
+import Axios from "axios";
 
-const BACKEND_URL = "http://localhost:80/api/";
-
+const BACKEND_URL = "http://localhost:80/api/operational-dashboard/";
 
 // export async function getTickets() {
 //   try {
@@ -16,7 +15,7 @@ export async function getTickets() {
   try {
     const response = await fetch(BACKEND_URL);
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
     const data = await response.json();
     return data;
@@ -26,9 +25,9 @@ export async function getTickets() {
   }
 }
 
-  export function getBackendUrl(){
-    return BACKEND_URL;
-  }
+export function getBackendUrl() {
+  return BACKEND_URL;
+}
 
 export const formatDate = (date) => {
   const dateObject = new Date(date);
@@ -45,8 +44,3 @@ export const formatDate = (date) => {
     return null;
   }
 };
- 
-
-  
-  
-  
