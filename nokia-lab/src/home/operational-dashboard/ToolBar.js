@@ -9,8 +9,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 
-
-export default function ToolBar({ onExportClick  }) {
+export default function ToolBar({ onExportClick, removeOptions }) {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -27,17 +26,19 @@ export default function ToolBar({ onExportClick  }) {
                 <HomeIcon style={{ fontSize: 30, color: "#001F67" }} />
               </Link>
             </IconButton>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <Link to="/grafice">
-                <BarChartIcon style={{ fontSize: 25, color: "#001F67" }} />
-              </Link>
-            </IconButton>
+            {!removeOptions && (
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                sx={{ mr: 2 }}
+              >
+                <Link to="/grafice">
+                  <BarChartIcon style={{ fontSize: 25, color: "#001F67" }} />
+                </Link>
+              </IconButton>
+            )}
             <Typography
               variant="h6"
               noWrap
@@ -52,9 +53,15 @@ export default function ToolBar({ onExportClick  }) {
                 aria-label="open drawer"
                 sx={{ mr: 2 }}
               >
-                <Button onClick={onExportClick} variant="contained" color="success">
-                  Export
-                </Button>
+                {!removeOptions && (
+                  <Button
+                    onClick={onExportClick}
+                    variant="contained"
+                    color="success"
+                  >
+                    Export
+                  </Button>
+                )}
               </IconButton>
               <IconButton
                 size="large"
