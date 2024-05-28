@@ -14,11 +14,12 @@ const Login = () => {
     const formData = new FormData(e.target);
     try {
       const response = await axios.post("http://localhost:80/api/log-in/", formData);
-      if (response.data === "Success") {
+      if (response.data.status === "Success") {
         navigate("/homepage");
+        alert("Success");
       } else {
-        setError(response.data);
-        alert(response.data);
+        setError(response.data.message);
+        alert(response.data.message);
       }
     } catch (error) {
       setError("An error occurred during login.");

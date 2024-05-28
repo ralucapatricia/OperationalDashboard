@@ -16,11 +16,12 @@ const Register = () => {
         "http://localhost:80/api/sign-up/",
         formData
       );
-      if (response.data === "Success") {
+      if (response.data.status === "Success") {
         navigate("/");
+        alert("Success");
       } else {
-        setError(response.data);
-        alert(response.data);
+        setError(response.data.message);
+        alert(response.data.message);
       }
     } catch (error) {
       setError("An error occurred during registration.");
@@ -43,7 +44,6 @@ const Register = () => {
                   required
                   id="ps1"
                 ></input>
-                <br></br>
                 <input
                   type="email"
                   placeholder="Enter your Email"
@@ -51,7 +51,6 @@ const Register = () => {
                   required
                   id="ps1"
                 ></input>
-                <br></br>
                 <input
                   type="password"
                   placeholder="Enter Password"
@@ -59,7 +58,6 @@ const Register = () => {
                   required
                   id="ps1"
                 ></input>
-                <br></br>
                 <input
                   type="tel"
                   placeholder="Enter Phone Number"
@@ -67,7 +65,6 @@ const Register = () => {
                   required
                   id="ps1"
                 ></input>
-                <br></br>
                 <p id="whitep3">Enter your date of birth:</p>
                 <input
                   type="date"
@@ -76,8 +73,12 @@ const Register = () => {
                   required
                   id="ps1"
                   max="05-15-2024"
-                ></input>
-                <br></br>
+                ></input>                             
+                <label>
+                  <input type="checkbox" name="request_admin" id="in"/>
+                  <p id="whitep4">Request admin role</p>
+                </label>
+
                 <input
                   type="submit"
                   placeholder="Register"

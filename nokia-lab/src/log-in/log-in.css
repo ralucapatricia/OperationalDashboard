@@ -78,7 +78,7 @@
 }
 #ps1 {
   padding: 12px 20px;
-  margin-top: -2%;
+  margin-bottom: 1%;
   width: 40%;
   border: 1px solid #ccc;
   box-sizing: border-box;
@@ -113,19 +113,25 @@
 
 #whitep3 {
   color: white;
-  margin-top: -3%;
+  margin-top: 1%;
   font-size: 0.8vw;
   letter-spacing: 1px;
   line-height: 26px;
 }
-
+#whitep4 {
+  color: white;
+  font-size: 0.7vw;
+  letter-spacing: 1px;
+}
+#in{
+  margin-top: 0%;
+}
 #register {
   color: white;
   font-size: 0.8vw;
   letter-spacing: 0.8px;
   line-height: 26px;
   text-decoration: underline;
-  margin-top: 10px;
 }
 
 @media only screen and (max-height: 1000px) and (min-height: 801px) {
