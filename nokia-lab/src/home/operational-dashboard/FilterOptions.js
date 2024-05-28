@@ -249,8 +249,6 @@ export default function FilterOptions({ setFilteredData, filterType }) {
             setShowPopup(true);
           }
           setFilteredData(closedTickets);
-        } else {
-          setFilteredData(response.data.filter((ticket) => ticket.days < 0));
         }
       }
     } catch (error) {
@@ -560,9 +558,25 @@ export default function FilterOptions({ setFilteredData, filterType }) {
       </div>
       {showPopup && (
         <NoResultsPopup message="No tickets found!">
-          <div class="btn-container">
-            <button className="btn" onClick={CloseButtonHandler}>
-              OK
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <button
+              style={{
+                textDecoration: "none",
+                borderRadius: "4px",
+                border: "none",
+                backgroundColor: "#001f67",
+                fontSize: "20px",
+                transitionDuration: "0.4s",
+                textAlign: "center",
+                color: "white",
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                paddingLeft: "30px",
+                paddingRight: "30px",
+              }}
+              onClick={CloseButtonHandler}
+            >
+              Ok
             </button>
           </div>
         </NoResultsPopup>

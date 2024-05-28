@@ -25,6 +25,21 @@ export async function getTickets() {
   }
 }
 
+export const updateTicket = async (ticket) => {
+  try {
+    const response = await fetch(BACKEND_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(ticket),
+    });
+    return await response.json();
+  } catch (error) {
+    throw new Error('Failed to update ticket');
+  }
+};
+
 export function getBackendUrl() {
   return BACKEND_URL;
 }
