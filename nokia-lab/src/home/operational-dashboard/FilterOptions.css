@@ -1,15 +1,18 @@
 .MuiInputBase-root { /*datatime*/
   height: 40px;
+  margin-left: 3px;
 }
 
-.MuiAutocomplete-inputRoot {  /*celelalte*/
+.MuiAutocomplete-root {  /*celelalte*/
   height: 40px;
+  margin-right: 3px;
 }
 
 /*incident number*/
 
 .textField-root {
   width: 300px;
+  margin-left: 3px;
 }
 
 .textField-input {
