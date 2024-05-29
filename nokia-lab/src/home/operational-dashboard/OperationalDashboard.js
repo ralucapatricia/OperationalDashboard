@@ -124,7 +124,7 @@ export default function OperationalDashboard() {
               setPage(0);
             }}
           />
-          <div style={{ padding: "20px" }}>
+          <div style={{ padding: "15px" }}>
             <FilterOptions
               setFilteredData={setFilteredData}
               filterType={filterType}
@@ -143,8 +143,9 @@ export default function OperationalDashboard() {
                     {columns.map((column) => (
                       <TableCell
                         key={column.id}
+                        size="small"
                         align={column.align}
-                        style={{ minWidth: column.minWidth }}
+                        style={{ minWidth: column.minWidth, height:2}}
                       >
                         {column.label}
                       </TableCell>

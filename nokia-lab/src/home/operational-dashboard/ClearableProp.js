@@ -31,7 +31,7 @@ export default function ClearableProp({ handleDateChange, value, label }) {
       >
         <DemoItem>
           <DatePicker
-            sx={{ width: 160 }}
+            sx={{ width: 100, height: 50, }}
             value={value}
             onChange={(newValue) => {
               handleDateChange(newValue);

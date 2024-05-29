@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import NoResultsPopup from "./NoResultsPopup";
 import { formatDate } from "./service/OperationalDashboardService";
 import "./NoResultsPopup.css";
+import "./FilterOptions.css";
 import {
   serviceOptions,
   priorityOptions,
@@ -264,7 +265,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         <Box
           component="form"
           sx={{
-            "& .MuiTextField-root": { width: "10ch" },
+            "& .MuiTextField-root": { width: "75px"},
           }}
           noValidate
           autoComplete="off"
@@ -272,6 +273,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
           <TextField
             id="INCIDENT_NUMBER"
             label="Number"
+            size = "small"
             type="number"
             value={filters.incidentNumber || ""}
             onChange={(event) => {
@@ -286,10 +288,11 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         </Box>
         <Autocomplete
           id="Service"
+          size = "small"
           options={serviceOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.service}
           onChange={(event, newValue) => handleChange("service", newValue)}
           onInputChange={(event, newInputValue) => {
@@ -301,10 +304,11 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="Priority"
+          size = "small"
           options={priorityOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.priority}
           onChange={(event, newValue) => handleChange("priority", newValue)}
           onInputChange={(event, newInputValue) => {
@@ -316,6 +320,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <ClearableProp
           value={dates.submitDate}
+          size = "small"
           handleDateChange={(newValue) =>
             handleDateChange("submitDate", newValue)
           }
@@ -323,6 +328,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <ClearableProp
           value={dates.resolvedDate}
+          size = "small"
           handleDateChange={(newValue) =>
             handleDateChange("resolvedDate", newValue)
           }
@@ -330,6 +336,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <ClearableProp
           value={dates.requiredResolutionDataTime}
+          size = "small"
           handleDateChange={(newValue) =>
             handleDateChange("requiredResolutionDataTime", newValue)
           }
@@ -337,6 +344,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <ClearableProp
           value={dates.endOfImpact}
+          size = "small"
           handleDateChange={(newValue) =>
             handleDateChange("endOfImpact", newValue)
           }
@@ -344,10 +352,11 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="PendingDuration"
+          size = "small"
           options={pendingDurationOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.pendingDuration}
           onChange={(event, newValue) =>
             handleChange("pendingDuration", newValue)
@@ -363,10 +372,11 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="ResolutionCategory"
+          size = "small"
           options={resolutionCategoryOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.resolutionCategory}
           onChange={(event, newValue) =>
             handleChange("resolutionCategory", newValue)
@@ -382,10 +392,11 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="Status"
+          size = "small"
           options={statusOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.status}
           onChange={(event, newValue) =>
             handleChange("statusOptions", newValue)
@@ -399,14 +410,15 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
       </div>
       <div
-        style={{ display: "flex", flexDirection: "row", paddingTop: "15px" }}
+        style={{ display: "flex", flexDirection: "row" }}
       >
         <Autocomplete
           id="Submitter"
+          size = "small"
           options={submitterOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.submitter}
           onChange={(event, newValue) => handleChange("submitter", newValue)}
           onInputChange={(event, newInputValue) => {
@@ -418,10 +430,11 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="AssignedGroup"
+          size = "small"
           options={assignedGroupOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.assignedGroup}
           onChange={(event, newValue) =>
             handleChange("assignedGroup", newValue)
@@ -437,10 +450,11 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="Assignee"
+          size = "small"
           options={AssigneeOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.assignee}
           onChange={(event, newValue) => handleChange("assignee", newValue)}
           onInputChange={(event, newInputValue) => {
@@ -452,10 +466,11 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="Project"
+          size = "small"
           options={projectOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
-          sx={{ width: 300 }}
+          sx={{ width: 175 }}
           value={filters.project}
           onChange={(event, newValue) => handleChange("project", newValue)}
           onInputChange={(event, newInputValue) => {
@@ -467,6 +482,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="ResolveTime"
+          size = "small"
           options={resolveTimeOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
@@ -484,6 +500,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="PendingMinutes"
+          size = "small"
           options={pendingMinutesOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
@@ -503,6 +520,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <ClearableProp
           value={dates.closeDate}
+          size = "small"
           handleDateChange={(newValue) =>
             handleDateChange("closeDate", newValue)
           }
@@ -510,6 +528,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="ResolveSLA"
+          size = "small"
           options={resolveSLAOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
@@ -527,6 +546,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="RespondSLA"
+          size = "small"
           options={respondSLAOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}
@@ -544,6 +564,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
         />
         <Autocomplete
           id="SLAstatus"
+          size = "small"
           options={SLAstatusOptions}
           getOptionLabel={(option) => option.title}
           filterOptions={filterOptions}

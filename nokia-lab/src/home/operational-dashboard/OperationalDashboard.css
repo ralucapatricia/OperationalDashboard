@@ -5,14 +5,17 @@
     font-size: 16px !important; 
     font-weight: 700 !important; 
     box-shadow: 0px 4px 4px -4px rgba(0, 0, 0, 0.2); 
+    padding: 0;
   }
 
   .MuiTableRow-root:nth-of-type(even) {
     background-color: #B8CAF2 !important; 
+    padding: 0;
   }
   
   .MuiTableRow-root:nth-of-type(odd) {
     background-color: #F4F4F5 !important; 
+    padding: 0;
   } 
 
   body {
@@ -20,7 +23,7 @@
   } 
 
   .MuiTableCell-root {
-    border-bottom: 2px solid #3E68A3; 
+    border-bottom: 1px solid #3E68A3; 
     border-right: 1px solid #3E68A3; 
   }
   
@@ -28,12 +31,14 @@
     color: #04080F !important; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     font-size: 16px !important;
+    padding:0;
   } 
    
   .MuiTableCell-head {
     color: #001F67 !important; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; 
     font-size: 17px !important;
+    padding: 0;
   } 
   .MuiTable-root {
     display: table;
@@ -45,4 +50,5 @@
     text-align: center;
     vertical-align: middle;
 }
+
 

@@ -56,6 +56,9 @@ const Login = () => {
               <Link to="/register" id="register">
                 Sign up
               </Link>
+              <Link to="/OperationalDashboard" id="register">
+                Dashboard
+              </Link>
               <nav></nav>
             </div>
           </div>
