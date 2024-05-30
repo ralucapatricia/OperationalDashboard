@@ -280,7 +280,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
               const value = event.target.value;
               handleChange("incidentNumber", value === "" ? null : value);
             }}
-            placeholder="Incident Number"
+            placeholder="Nr"
             InputLabelProps={{
               shrink: true,
             }}
@@ -324,7 +324,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
           handleDateChange={(newValue) =>
             handleDateChange("submitDate", newValue)
           }
-          label="Submit Date"
+          label="Submit"
         />
         <ClearableProp
           value={dates.resolvedDate}
@@ -332,7 +332,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
           handleDateChange={(newValue) =>
             handleDateChange("resolvedDate", newValue)
           }
-          label="Resolved Date"
+          label="Resolved"
         />
         <ClearableProp
           value={dates.requiredResolutionDataTime}
@@ -340,7 +340,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
           handleDateChange={(newValue) =>
             handleDateChange("requiredResolutionDataTime", newValue)
           }
-          label="Required Resolution Date"
+          label="RRT"
         />
         <ClearableProp
           value={dates.endOfImpact}
@@ -348,7 +348,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
           handleDateChange={(newValue) =>
             handleDateChange("endOfImpact", newValue)
           }
-          label="End Of Impact Date"
+          label="EOI"
         />
         <Autocomplete
           id="PendingDuration"
@@ -367,7 +367,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
             }
           }}
           renderInput={(params) => (
-            <TextField {...params} label="PendingDuration" />
+            <TextField {...params} label="Pending" />
           )}
         />
         <Autocomplete
@@ -387,7 +387,7 @@ export default function FilterOptions({ setFilteredData, filterType }) {
             }
           }}
           renderInput={(params) => (
-            <TextField {...params} label="ResolutionCategory" />
+            <TextField {...params} label="Category" />
           )}
         />
         <Autocomplete

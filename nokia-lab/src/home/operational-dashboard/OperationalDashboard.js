@@ -101,8 +101,9 @@ export default function OperationalDashboard() {
         <LoadingSpinner />
       ) : (
         <>
-          <ToolBar onExportClick={onDownload} />
-          <TabsBar
+          <ToolBar onExportClick={onDownload} 
+          sx={{padding: 0, height: 2}}/>
+          <TabsBar className="tabsbar"
             currentTab={all ? 1 : open ? 2 : closed ? 3 : 1}
             handleChangeTab={(event, newValue) => {
               if (newValue === 1) {
@@ -124,14 +125,14 @@ export default function OperationalDashboard() {
               setPage(0);
             }}
           />
-          <div style={{ padding: "15px" }}>
+          <div style={{ padding: "7px" }}>
             <FilterOptions
               setFilteredData={setFilteredData}
               filterType={filterType}
             />
           </div>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <TableContainer sx={{ maxHeight: 540 }}>
+            <TableContainer sx={{ maxHeight: 600 }}>
               <Table
                 stickyHeader
                 aria-label="sticky table"
@@ -145,7 +146,7 @@ export default function OperationalDashboard() {
                         key={column.id}
                         size="small"
                         align={column.align}
-                        style={{ minWidth: column.minWidth, height:2}}
+                        style={{ minWidth: column.minWidth, height:1}}
                       >
                         {column.label}
                       </TableCell>
@@ -182,13 +183,14 @@ export default function OperationalDashboard() {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[15, 25, 100]}
               component="div"
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              sx={{padding:0, height:1}}
             />
           </Paper>
           <TicketCount value={totalTickets} />
