@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('C:\Users\Lenovo4\Downloads\nokia-lab\nokia-lab\nokia-lab\src\grafice\1fundal.png') no-repeat center center fixed;
+    background-size: cover;
+  }
+  
+ 
+  .nav-button {
+    background-color: rgba(255, 255, 255, 0.5); /* Fond transparent */
+    border: none; /* Elimină conturul butonului */
+    color: #333; /* Culorea textului */
+    padding: 10px 20px; /* Spațiere între conținut și margine */
+    font-size: 16px; /* Dimensiunea textului */
+    cursor: pointer; /* Cursor pointer la hover */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Tranzitie pentru schimbarea culorii de fond și a umbrei */
+    border-radius: 5px; /* Rotunjirea colțurilor */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adaugă umbra */
+    margin: 0 30px; /* Spațiu între butoane */
+  }
+
+  .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.8); /* Fond ușor transparent la hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Umbră la hover */
+  }
+  
+  
+   .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5); /* Adjust opacity for more transparency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+        margin-top: 20px; /* Ajustează valoarea în funcție de spațiul dorit între filtre și conținutul următor */
+
+    width: 90%; /* Adjust width to make it wider */
+    max-width: maximum; /* Set maximum width if needed */
+    margin: 0 auto; /* Center the container horizontally */
+  }
+  
+  .buttons-container {
+    display: flex;
+    justify-content: center; /* Așază butoanele pe mijloc pe axa orizontală */
+    margin-top: 20px; /* Spațiu între grafice și butoane */
+  }
+  
+
+  /* Stilizare la hover */
+  
+  
+  nav {
+    display: flex;
+    justify-content: center; /* Center the nav content horizontally */
+    align-items: center; /* Center the nav content vertically if necessary */
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .pie-chart-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    text-align: center; /* Așează textul în centrul paginii */
+    margin-top: 50px; /* Spațiu de la marginea de sus a paginii */
+  }
+  

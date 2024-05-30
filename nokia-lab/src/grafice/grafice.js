@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { PieChart } from '@mui/x-charts/PieChart';
 //import { ModalGrafice } from "./modal_grafice";
@@ -19,30 +20,59 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
-
-
+import { LineChart } from '@mui/x-charts/LineChart';
+import debounce from 'lodash/debounce';
+import './grafice.css';  
 
 
 const Grafice = () => {
   const [loading, setLoading] = useState(true);
   const [slaData, setSlaData] = useState([]);
+  const [lineChartData, setLineChartData] = useState([]);
   const [openData, setOpen] = useState({open: false, tableData: []});
+
+  const navigate = useNavigate(); //hook pt navigare
 
   const handleOpen = (tableContent) => setOpen({open:true, tableData: tableContent});
   const handleClose = () => setOpen({open:false, tableData: []});
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const [filters, setFilters] = useState({
+    valueBegin: dayjs(),
+    valueEnd: dayjs(),
+    timeSpan: null,
+    priority: null,
+    service: null,
+    project: null,
+    assignee: null,
+  });
+
+  const [options, setOptions] = useState({
+    timeSpanFilter: null,
+    priorityFilter: null,
+    serviceFilter: null,
+    projectsFilter: null,
+    assigneeFilter: null,
+  });
+
+
+  const updateBackend = useCallback(
+    debounce(async (newFilters) => {
       try {
-        const response = await fetch("http://localhost/api/charts/");
+        const response = await fetch('http://localhost/api/Charts/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newFilters),
+        });
+
         const jsonData = await response.json();
-        
+
         setSlaData([
           { label: 'In SLA', 
-            value: jsonData.ticketsInSLA.length,
-            content: jsonData.ticketsInSLA, 
-            columns: jsonData.headers.map(header => {
+            value: jsonData.graphics.sla.ticketsInSLA.length,
+            content: jsonData.graphics.sla.ticketsInSLA, 
+            columns: jsonData.graphics.sla.headers.map(header => {
               return {
                 id: header.toLowerCase(), 
                 label: header,             
@@ -51,9 +81,68 @@ const Grafice = () => {
             })
           },
           { label: 'Out of SLA', 
-            value: jsonData.ticketsOutSLA.length, 
-            content: jsonData.ticketsOutSLA, 
-            columns: jsonData.headers.map(header => {
+            value: jsonData.graphics.sla.ticketsOutSLA.length, 
+            content: jsonData.graphics.sla.ticketsOutSLA, 
+            columns: jsonData.graphics.sla.headers.map(header => {
+              return {
+                id: header.toLowerCase(), 
+                label: header,              
+                minWidth: 100               
+              };
+            })
+          }
+        ]);
+
+        setLineChartData(jsonData.graphics.line);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }, 300), // Adjust debounce delay as needed
+    []
+  );
+
+  const handleFilterChange = (field, value) => {
+    const newFilters = { ...filters, [field]: dayjs.isDayjs(value) ? dayjs(value) : value};
+    setFilters(newFilters); 
+    console.log(newFilters);
+    
+    updateBackend(newFilters);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost/api/Charts/", {
+          method: 'GET',
+          headers: {
+            
+          }});
+        const jsonData = await response.json();
+        
+        setOptions({
+          timeSpanFilter: jsonData.filters.timeSpanFilter,
+          priorityFilter: jsonData.filters.priorityFilter,
+          serviceFilter: jsonData.filters.serviceFilter,
+          projectsFilter: jsonData.filters.projectsFilter,
+          assigneeFilter: jsonData.filters.assigneeFilter
+        })
+
+        setSlaData([
+          { label: 'In SLA', 
+            value: jsonData.graphics.sla.ticketsInSLA.length,
+            content: jsonData.graphics.sla.ticketsInSLA, 
+            columns: jsonData.graphics.sla.headers.map(header => {
+              return {
+                id: header.toLowerCase(), 
+                label: header,             
+                minWidth: 100              
+              };
+            })
+          },
+          { label: 'Out of SLA', 
+            value: jsonData.graphics.sla.ticketsOutSLA.length, 
+            content: jsonData.graphics.sla.ticketsOutSLA, 
+            columns: jsonData.graphics.sla.headers.map(header => {
               return {
                 id: header.toLowerCase(), 
                 label: header,              
@@ -63,6 +152,7 @@ const Grafice = () => {
           }
         ]);
         
+        setLineChartData(jsonData.graphics.line);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -72,42 +162,7 @@ const Grafice = () => {
       fetchData();
   }, []);
 
-  const [valueBegin, setValueBegin] = React.useState(dayjs('2022-04-17T15:30'));
-  const [valueEnd, setValueEnd] = React.useState(dayjs('2022-04-17T15:30'));
 
-
-
-  const timeSpanFilter = [
-    { label: 'All' },
-    { label: 'Daily' },
-    { label: 'Weekly' },
-    { label: 'Monthly' },
-  ]
-
-  const priorityFilter = [
-    { label: 'All', value: 0 },
-    { label: '1', value: 1 },
-    { label: '2', value: 2 },
-    { label: '3', value: 3},
-  ]
-
-  const serviceFilter = [
-    { label: '' },
-    { label: '' },
-    { label: '' }
-  ]
-
-  const projectsFilter = [
-    { label: '' },
-    { label: '' },
-    { label: '' }
-  ]
-
-  const assignerFilter = [
-    { label: '' },
-    { label: '' },
-    { label: '' }
-  ]
   
   const style = {
     position: 'absolute',
@@ -120,33 +175,32 @@ const Grafice = () => {
     boxShadow: 24,
     p: 4,
   };
+  
 
   return (
     <>
-      <h2>Grafice</h2>
+      <h2 align="center" >Grafice</h2>  {/*alinierea de aici nu face nimic*/}
       <nav>
         <ul>
-          <li>
-            <Link to="/">Log-in</Link>
-          </li>
-          <li>
-            <Link to="/homepage">Homepage</Link>
-          </li>
+          <div className="buttons-container">
+            <button  className="nav-button" onClick={() => navigate("/")}>Log-in</button>
+            <button className="nav-button" onClick={() => navigate("/homepage")}>Homepage</button>
+          </div>
         </ul>
       </nav>
       {loading ? (
         <div>Loading...</div>
       ) : (
         <>
-          <div class="d-flex flex-row justify-content-around align-content-center m-5">
+          <div class="d-flex flex-row justify-content-around align-content-center m-5"> {/*bootstrap CSS library*/}
             
             
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DateTimePicker']}>
                 <DateTimePicker
                   label="Begin date"
-                  value={valueBegin}
-                  onChange={(newValue) => setValueBegin(newValue)}
+                  value={filters.valueBegin}
+                  onChange={(newValue) => handleFilterChange('valueBegin',  newValue)}
                 />
               </DemoContainer>
             </LocalizationProvider>      
@@ -155,50 +209,56 @@ const Grafice = () => {
               <DemoContainer components={['DateTimePicker']}>
                 <DateTimePicker
                   label="End date"
-                  value={valueEnd}
-                  onChange={(newValue) => setValueEnd(newValue)}
+                  value={filters.valueEnd}
+                  onChange={(newValue) => handleFilterChange('valueEnd', newValue )}
                 />
               </DemoContainer>
             </LocalizationProvider>   
 
             <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={timeSpanFilter}
-            sx={{ width: 150 }}
-            renderInput={(params) => <TextField {...params} label="Time Span" />}
-            />    
+        disablePortal
+        id="time-span"
+        options={options.timeSpanFilter}
+        sx={{ width: 150 }}
+        renderInput={(params) => <TextField {...params} label="Time Span" />}
+        onChange={(event, newValue) => handleFilterChange('timeSpan', newValue)}
+      />    
+
             <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={priorityFilter}
-            sx={{ width: 150 }}
-            renderInput={(params) => <TextField {...params} label="Priority" />}
-            />    
+        disablePortal
+        id="priority"
+        options={options.priorityFilter}
+        sx={{ width: 150 }}
+        renderInput={(params) => <TextField {...params} label="Priority" />}
+        onChange={(event, newValue) => handleFilterChange('priority', newValue)}
+      />    
             <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={serviceFilter}
-            sx={{ width: 150 }}
-            renderInput={(params) => <TextField {...params} label="Service" />}
-            />    
+        disablePortal
+        id="service"
+        options={options.serviceFilter}
+        sx={{ width: 150 }}
+        renderInput={(params) => <TextField {...params} label="Service" />}
+        onChange={(event, newValue) => handleFilterChange('service', newValue)}
+      />     
+             <Autocomplete
+        disablePortal
+        id="project"
+        options={options.projectsFilter}
+        sx={{ width: 150 }}
+        renderInput={(params) => <TextField {...params} label="Projects" />}
+        onChange={(event, newValue) => handleFilterChange('project', newValue)}
+      />   
             <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={projectsFilter}
-            sx={{ width: 150 }}
-            renderInput={(params) => <TextField {...params} label="Projects" />}
-            />    
-            <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={assignerFilter}
-            sx={{ width: 150 }}
-            renderInput={(params) => <TextField {...params} label="Assigner" />}
-            />    
+        disablePortal
+        id="assigner"
+        options={options.assigneeFilter}
+        sx={{ width: 150 }}
+        renderInput={(params) => <TextField {...params} label="Assigner" />}
+        onChange={(event, newValue) => handleFilterChange('assigner', newValue)}
+      />
           </div>   
 
-
+          <div className="container">
           <PieChart
             series={[
               {
@@ -213,7 +273,19 @@ const Grafice = () => {
             width={400}
             height={200}
           />
+          <LineChart
+            series={[
+              {
+                data: lineChartData.map(entry => entry.count),
+              },
+            ]}
+            xAxis={[{ scaleType: 'point', data: lineChartData.map(entry => entry.yearMonth.toString()) }]}
+            height={300}
+            margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
+            grid={{ vertical: true, horizontal: true }}
+          />
 
+          </div>
 
           <Modal
             open={openData.open}
@@ -262,9 +334,11 @@ const Grafice = () => {
                 </Paper>
             </Box>
           </Modal>
+
+        
         </>
       )}
-    </>
+      </>
   );
 };
 
