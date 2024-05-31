@@ -7,16 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
-import EditIcon from "@mui/icons-material/Edit";
-import CheckIcon from "@mui/icons-material/Check";
-
+import { useDownloadExcel } from "react-export-table-to-excel";
 import "./OperationalDashboard.css";
 import LoadingSpinner from "../../util/LoadingSpinner";
 import TicketCount from "./TicketCount";
 import FilterOptions from "./FilterOptions";
-import { useDownloadExcel } from "react-export-table-to-excel";
 import {
   getTickets,
   updateTicket,
@@ -25,6 +20,7 @@ import { columns } from "./ui-util/TableUtils";
 import TabsBar from "./TabsBar";
 import ToolBar from "./ToolBar";
 import NoResultsPopup from "./NoResultsPopup";
+import EditableCell from "./EditableCell";
 
 const databaseErrorMessage =
   "The database is currently unavailable 😞 Please try again later.";
@@ -49,12 +45,11 @@ export default function OperationalDashboard() {
     filename: "tickets",
   });
 
+  const [edit, setEdit] = useState(false);
   const [editedRows, setEditedRows] = useState({});
-  const [editedDescriptions, setEditedDescriptions] = useState({});
-  const [editedNotes, setEditedNotes] = useState({});
+  const [editedValues, setEditedValues] = useState({});
   const [editingColumn, setEditingColumn] = useState(null);
   const [editingRow, setEditingRow] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = (row, column) => {
     setEditingColumn(column);
@@ -68,8 +63,7 @@ export default function OperationalDashboard() {
   const handleSaveClick = async (row) => {
     const updatedRow = {
       ...row,
-      DESCRIPTION: editedDescriptions[row.INCIDENT_NUMBER] || row.DESCRIPTION,
-      NOTES: editedNotes[row.INCIDENT_NUMBER] || row.NOTES,
+      [editingColumn]: editedValues[row.INCIDENT_NUMBER] || row[editingColumn],
     };
 
     try {
@@ -80,12 +74,7 @@ export default function OperationalDashboard() {
             r.INCIDENT_NUMBER === row.INCIDENT_NUMBER ? updatedRow : r
           )
         );
-        setEditedDescriptions((prev) => {
-          const newState = { ...prev };
-          delete newState[row.INCIDENT_NUMBER];
-          return newState;
-        });
-        setEditedNotes((prev) => {
+        setEditedValues((prev) => {
           const newState = { ...prev };
           delete newState[row.INCIDENT_NUMBER];
           return newState;
@@ -103,18 +92,10 @@ export default function OperationalDashboard() {
     }
   };
 
-  const handleDescriptionChange = (event, code) => {
+  const handleChange = (event, code) => {
     const { value } = event.target;
-    setEditedDescriptions((prevDescriptions) => ({
-      ...prevDescriptions,
-      [code]: value,
-    }));
-  };
-
-  const handleNoteChange = (event, code) => {
-    const { value } = event.target;
-    setEditedNotes((prevNotes) => ({
-      ...prevNotes,
+    setEditedValues((prev) => ({
+      ...prev,
       [code]: value,
     }));
   };
@@ -208,7 +189,11 @@ export default function OperationalDashboard() {
         <LoadingSpinner />
       ) : (
         <>
-          <ToolBar onExportClick={onDownload} />
+          <ToolBar
+            onExportClick={onDownload}
+            onActivatedEdit={() => setEdit(!edit)}
+            removeOptions={removeOptions}
+          />
           <TabsBar
             currentTab={all ? 1 : open ? 2 : closed ? 3 : 1}
             handleChangeTab={(event, newValue) => {
@@ -270,98 +255,43 @@ export default function OperationalDashboard() {
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
-                          if (column.id === "DESCRIPTION") {
+                          const isEditing =
+                            editedRows.hasOwnProperty(row.INCIDENT_NUMBER) &&
+                            editingRow === row &&
+                            editingColumn === column.id;
+                          if (
+                            column.id === "DESCRIPTION" ||
+                            column.id === "SLA_STATUS" ||
+                            column.id === "RESOLVE_SLA" ||
+                            column.id === "RESPOND_SLA" ||
+                            column.id === "NOTES" ||
+                            column.id === "CLOSE_DATE" ||
+                            column.id === "RESOLVED_DATE" ||
+                            column.id === "END_OF_IMPACT"
+                          ) {
                             return (
-                              <TableCell key={column.id} align={column.align}>
-                                {editedRows.hasOwnProperty(
-                                  row.INCIDENT_NUMBER
-                                ) &&
-                                editingRow === row &&
-                                editingColumn === column.id ? (
-                                  <>
-                                    <TextField
-                                      value={
-                                        editedDescriptions[
-                                          row.INCIDENT_NUMBER
-                                        ] !== undefined
-                                          ? editedDescriptions[
-                                              row.INCIDENT_NUMBER
-                                            ]
-                                          : row.DESCRIPTION
-                                      }
-                                      onChange={(event) =>
-                                        handleDescriptionChange(
-                                          event,
-                                          row.INCIDENT_NUMBER
-                                        )
-                                      }
-                                      autoFocus
-                                    />
-                                    <IconButton
-                                      onClick={() => handleSaveClick(row)}
-                                    >
-                                      <CheckIcon />
-                                    </IconButton>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div>{row.DESCRIPTION}</div>
-                                    <IconButton
-                                      onClick={() =>
-                                        handleEditClick(row, column.id)
-                                      }
-                                    >
-                                      <EditIcon />
-                                    </IconButton>
-                                  </>
-                                )}
-                              </TableCell>
-                            );
-                          } else if (column.id === "NOTES") {
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                {editedRows.hasOwnProperty(
-                                  row.INCIDENT_NUMBER
-                                ) &&
-                                editingRow === row &&
-                                editingColumn === column.id ? (
-                                  <>
-                                    <TextField
-                                      value={
-                                        editedNotes[row.INCIDENT_NUMBER] !==
-                                        undefined
-                                          ? editedNotes[row.INCIDENT_NUMBER]
-                                          : row.NOTES
-                                      }
-                                      onChange={(event) =>
-                                        handleNoteChange(
-                                          event,
-                                          row.INCIDENT_NUMBER
-                                        )
-                                      }
-                                      autoFocus
-                                    />
-                                    <IconButton
-                                      onClick={() => handleSaveClick(row)}
-                                    >
-                                      <CheckIcon />
-                                    </IconButton>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div>{row.NOTES}</div>
-                                    <IconButton
-                                      onClick={() =>
-                                        handleEditClick(row, column.id)
-                                      }
-                                    >
-                                      <EditIcon />
-                                    </IconButton>
-                                  </>
-                                )}
-                              </TableCell>
+                              <EditableCell
+                                key={column.id}
+                                value={
+                                  isEditing
+                                    ? editedValues[row.INCIDENT_NUMBER] ||
+                                      row[column.id]
+                                    : row[column.id]
+                                }
+                                isEditing={isEditing}
+                                editEnabled={edit}
+                                onEditClick={() =>
+                                  handleEditClick(row, column.id)
+                                }
+                                onSaveClick={() => handleSaveClick(row)}
+                                onChange={(event) =>
+                                  handleChange(event, row.INCIDENT_NUMBER)
+                                }
+                                columnId={column.id}
+                              />
                             );
                           }
+
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {column.id === "TIME_REMAINING" && row["days"] < 0

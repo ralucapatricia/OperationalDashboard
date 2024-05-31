@@ -1,4 +1,5 @@
 import AppBar from "@mui/material/AppBar";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -9,7 +10,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 
-export default function ToolBar({ onExportClick, removeOptions }) {
+export default function ToolBar({ onExportClick, removeOptions, onActivatedEdit }) {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -45,6 +46,15 @@ export default function ToolBar({ onExportClick, removeOptions }) {
               component="div"
               sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
             ></Typography>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+            >
+              <EditNoteIcon style={{ fontSize: 35, color: "white" }} onClick={onActivatedEdit} />
+            </IconButton>
             <div sx={{ display: "flex", alignItems: "center" }}>
               <IconButton
                 size="large"

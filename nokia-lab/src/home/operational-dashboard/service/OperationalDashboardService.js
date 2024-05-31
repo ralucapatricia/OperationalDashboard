@@ -29,9 +29,6 @@ export const updateTicket = async (ticket) => {
   try {
     const response = await fetch(BACKEND_URL, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(ticket),
     });
     return await response.json();
@@ -39,6 +36,8 @@ export const updateTicket = async (ticket) => {
     throw new Error('Failed to update ticket');
   }
 };
+
+
 
 export function getBackendUrl() {
   return BACKEND_URL;
