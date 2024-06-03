@@ -28,16 +28,26 @@ export async function getTickets() {
 export const updateTicket = async (ticket) => {
   try {
     const response = await fetch(BACKEND_URL, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(ticket),
     });
     return await response.json();
   } catch (error) {
-    throw new Error('Failed to update ticket');
+    throw new Error("Failed to update ticket");
   }
 };
 
-
+export async function getUser() {
+  try {
+    const response = await fetch("http://localhost:80/api/get-user/", {
+      method: 'GET',
+      credentials: 'include' 
+    });
+    return await response.json();
+  } catch (error) {
+    throw new Error("Error fetching user name");
+  }
+}
 
 export function getBackendUrl() {
   return BACKEND_URL;

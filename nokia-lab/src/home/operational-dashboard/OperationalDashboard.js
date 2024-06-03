@@ -15,12 +15,18 @@ import FilterOptions from "./FilterOptions";
 import {
   getTickets,
   updateTicket,
+  getUser,
 } from "./service/OperationalDashboardService";
 import { columns } from "./ui-util/TableUtils";
 import TabsBar from "./TabsBar";
 import ToolBar from "./ToolBar";
 import NoResultsPopup from "./NoResultsPopup";
 import EditableCell from "./EditableCell";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
+import Tooltip from "@mui/material/Tooltip";  // Import Tooltip
 
 const databaseErrorMessage =
   "The database is currently unavailable 😞 Please try again later.";
@@ -45,45 +51,33 @@ export default function OperationalDashboard() {
     filename: "tickets",
   });
 
-  const [edit, setEdit] = useState(false);
-  const [editedRows, setEditedRows] = useState({});
-  const [editedValues, setEditedValues] = useState({});
-  const [editingColumn, setEditingColumn] = useState(null);
   const [editingRow, setEditingRow] = useState(null);
+  const [editedValues, setEditedValues] = useState({});
 
-  const handleEditClick = (row, column) => {
-    setEditingColumn(column);
-    setEditingRow(row);
-    setEditedRows({
-      ...editedRows,
-      [row.INCIDENT_NUMBER]: true,
-    });
+  const [notifications, setNotifications] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+
+
+  const handleEditClick = (row) => {
+    if (row.days >= 0) {
+      setEditingRow(row);
+      setEditedValues(row);
+    }
   };
 
-  const handleSaveClick = async (row) => {
-    const updatedRow = {
-      ...row,
-      [editingColumn]: editedValues[row.INCIDENT_NUMBER] || row[editingColumn],
-    };
-
+  const handleSaveClick = async () => {
     try {
-      const response = await updateTicket(updatedRow);
+      const response = await updateTicket(editedValues);
       if (response.status === 1) {
         setRows((prevRows) =>
           prevRows.map((r) =>
-            r.INCIDENT_NUMBER === row.INCIDENT_NUMBER ? updatedRow : r
+            r.INCIDENT_NUMBER === editedValues.INCIDENT_NUMBER
+              ? editedValues
+              : r
           )
         );
-        setEditedValues((prev) => {
-          const newState = { ...prev };
-          delete newState[row.INCIDENT_NUMBER];
-          return newState;
-        });
-        setEditedRows((prev) => {
-          const newState = { ...prev };
-          delete newState[row.INCIDENT_NUMBER];
-          return newState;
-        });
+        setEditingRow(null);
+        setEditedValues({});
       } else {
         console.error(response.message);
       }
@@ -92,11 +86,16 @@ export default function OperationalDashboard() {
     }
   };
 
-  const handleChange = (event, code) => {
+  const handleCancelClick = () => {
+    setEditingRow(null);
+    setEditedValues({});
+  };
+
+  const handleChange = (event, columnId) => {
     const { value } = event.target;
     setEditedValues((prev) => ({
       ...prev,
-      [code]: value,
+      [columnId]: value,
     }));
   };
 
@@ -144,13 +143,62 @@ export default function OperationalDashboard() {
       filteredTickets = rows;
     } else if (open) {
       filteredTickets = rows.filter(
-        (ticket) => ticket.is_pending === true && ticket.days > 0
+        (ticket) => ticket.is_pending === true && ticket.days >= 0
       );
     } else if (closed) {
       filteredTickets = rows.filter((ticket) => ticket.days < 0);
     }
     setFilteredData(filteredTickets);
   }, [all, open, closed, rows]);
+
+
+  //notifications
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getUser();
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    };
+  
+    fetchCurrentUser();
+  }, []);
+  
+  useEffect(() => {
+    const fetchUserAndSetNotifications = async () => {
+      try {
+        if (!currentUser) return;
+  
+        const username = currentUser.USERNAME; 
+        const notifications = rows
+          .filter(
+            (ticket) =>
+              ticket.minutes < 60 && ticket.minutes > 0 &&
+              ticket.days == 0 &&
+              ticket.hours == 0 &&
+              ticket.ASSIGNEE == username
+          )
+          .map(
+            (ticket) =>
+              `Your ticket ${ticket.INCIDENT_NUMBER} is approaching its SLA deadline. Time remaining: ${ticket.minutes}`
+          );
+        setNotifications(notifications);
+        console.log(notifications);
+      } catch (error) {
+        console.error("Error fetching user or setting notifications:", error);
+      }
+    };
+  
+    fetchUserAndSetNotifications();
+  }, [rows, currentUser]);
+  
+  
+  
+  
+  
+
 
   if (error && !loading) {
     return (
@@ -191,8 +239,8 @@ export default function OperationalDashboard() {
         <>
           <ToolBar
             onExportClick={onDownload}
-            onActivatedEdit={() => setEdit(!edit)}
             removeOptions={removeOptions}
+            notifications={notifications}
           />
           <TabsBar
             currentTab={all ? 1 : open ? 2 : closed ? 3 : 1}
@@ -256,52 +304,107 @@ export default function OperationalDashboard() {
                         {columns.map((column) => {
                           const value = row[column.id];
                           const isEditing =
-                            editedRows.hasOwnProperty(row.INCIDENT_NUMBER) &&
-                            editingRow === row &&
-                            editingColumn === column.id;
+                            editingRow &&
+                            editingRow.INCIDENT_NUMBER === row.INCIDENT_NUMBER;
+                          const isClosed = row["days"] < 0;
+
+                          if (column.id === "EDIT") {
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                {isEditing ? (
+                                  <>
+                                    <IconButton
+                                      onClick={handleSaveClick}
+                                      size="small"
+                                      color="primary"
+                                    >
+                                      <SaveIcon />
+                                    </IconButton>
+                                    <IconButton
+                                      onClick={handleCancelClick}
+                                      size="small"
+                                      color="secondary"
+                                    >
+                                      <CancelIcon />
+                                    </IconButton>
+                                  </>
+                                ) : (
+                                  <Tooltip
+                                    title={
+                                      isClosed
+                                        ? "Closed tickets cannot be edited"
+                                        : "Edit"
+                                    }
+                                  >
+                                    <span>
+                                      <IconButton
+                                        onClick={() => handleEditClick(row)}
+                                        size="small"
+                                        color="primary"
+                                        disabled={isClosed}
+                                      >
+                                        <EditIcon />
+                                      </IconButton>
+                                    </span>
+                                  </Tooltip>
+                                )}
+                              </TableCell>
+                            );
+                          }
+
                           if (
-                            column.id === "DESCRIPTION" ||
-                            column.id === "SLA_STATUS" ||
-                            column.id === "RESOLVE_SLA" ||
-                            column.id === "RESPOND_SLA" ||
-                            column.id === "NOTES" ||
-                            column.id === "CLOSE_DATE" ||
-                            column.id === "RESOLVED_DATE" ||
-                            column.id === "END_OF_IMPACT"
+                            [
+                              "DESCRIPTION",
+                              "NOTES",
+                              "CLOSE_DATE",
+                              "RESOLVED_DATE",
+                              "END_OF_IMPACT",
+                              "RESOLVE_SLA",
+                              "RESPOND_SLA",
+                              "SLA_STATUS",
+                            ].includes(column.id)
                           ) {
                             return (
                               <EditableCell
                                 key={column.id}
                                 value={
-                                  isEditing
-                                    ? editedValues[row.INCIDENT_NUMBER] ||
-                                      row[column.id]
-                                    : row[column.id]
+                                  isEditing ? editedValues[column.id] : value
                                 }
                                 isEditing={isEditing}
-                                editEnabled={edit}
-                                onEditClick={() =>
-                                  handleEditClick(row, column.id)
-                                }
-                                onSaveClick={() => handleSaveClick(row)}
-                                onChange={(event) =>
-                                  handleChange(event, row.INCIDENT_NUMBER)
-                                }
                                 columnId={column.id}
+                                onChange={(event) =>
+                                  handleChange(event, column.id)
+                                }
                               />
                             );
                           }
 
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.id === "TIME_REMAINING" && row["days"] < 0
-                                ? "CLOSED"
-                                : column.id === "TIME_REMAINING"
-                                ? `${row["days"]} days, ${row["hours"]}:${row["minutes"]}:${row["seconds"]}`
-                                : column.format && typeof value === "number"
-                                ? column.format(value)
-                                : value}
-                            </TableCell>
+                            {column.id === "TIME_REMAINING" && isClosed ? (
+                              <span style={{ backgroundColor: "gray", color: "white", borderRadius: "4px", padding: "5px" }}>CLOSED</span>
+                            ) : (
+                              column.id === "TIME_REMAINING" ? (
+                                <span style={{ 
+                                  backgroundColor: isClosed ? "gray" : "green", 
+                                  color: "white", 
+                                  borderRadius: "4px", 
+                                  padding: "10px", 
+                                  display: "inline-block", 
+                                  minWidth: "100px", 
+                                  textAlign: "center", 
+                                }}>
+                                  {`${row["days"]} days, ${row["hours"]}:${row["minutes"]}:${row["seconds"]}`}
+                                </span>
+                              ) : (
+                                column.format && typeof value === "number" ? (
+                                  column.format(value)
+                                ) : (
+                                  value
+                                )
+                              )
+                            )}
+                          </TableCell>
                           );
                         })}
                       </TableRow>
