@@ -74,10 +74,10 @@ const Register = () => {
                   id="ps1"
                   max="05-15-2024"
                 ></input>                             
-                <label>
+                <div id="chack">
                   <input type="checkbox" name="request_admin" id="in"/>
                   <p id="whitep4">Request admin role</p>
-                </label>
+                </div>
 
                 <input
                   type="submit"
