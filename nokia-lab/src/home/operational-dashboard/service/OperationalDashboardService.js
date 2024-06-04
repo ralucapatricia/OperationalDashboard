@@ -48,7 +48,16 @@ export async function getUser() {
     throw new Error("Error fetching user name");
   }
 }
-
+export async function getOptions() {
+  try {
+    const response = await fetch("http://localhost:80/api/filter-options/", {
+      method: 'GET',
+    });
+    return await response.json();
+  } catch (error) {
+    throw new Error("Error fetching user name");
+  }
+}
 export function getBackendUrl() {
   return BACKEND_URL;
 }

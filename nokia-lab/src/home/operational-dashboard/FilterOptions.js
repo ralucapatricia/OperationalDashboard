@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import Axios from "axios";
 import ClearableProp from "./ClearableProp";
 import Box from "@mui/material/Box";
@@ -24,11 +24,11 @@ import {
   SLAstatusOptions,
 } from "./ui-util/TableUtils";
 import { getBackendUrl } from "./service/OperationalDashboardService";
+import { getOptions } from "./service/OperationalDashboardService";
 
-const filterOptions = createFilterOptions({
-  matchFrom: "start",
-  stringify: (option) => option.title,
-});
+const filterOptions = (options, params) => {
+  return options;
+};
 
 export default function FilterOptions({ setFilteredData, filterType }) {
   const [filters, setFilters] = useState({
@@ -56,6 +56,18 @@ export default function FilterOptions({ setFilteredData, filterType }) {
     endOfImpact: null,
   });
   const [showPopup, setShowPopup] = useState(false);
+  const [priority, setPriorirty] = useState({});
+  useEffect(() => {
+    async function fetchOptions() {
+      try {
+        const options = await getOptions();
+        setPriorirty(options);
+      } catch (error) {
+        console.error("Error fetching the options:", error);
+      }
+    }
+    fetchOptions();
+  }, [priority]);
 
   const handleChange = (field, newValue) => {
     setFilters((prevFilters) => ({
