@@ -57,6 +57,8 @@ export default function OperationalDashboard() {
   const [notifications, setNotifications] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
+  const [activeFilters, setActiveFilters] =  useState(false);
+
 
   const handleEditClick = (row) => {
     if (row.days >= 0) {
@@ -195,9 +197,12 @@ export default function OperationalDashboard() {
   }, [rows, currentUser]);
   
   
-  
-  
-  
+  const handleFilterClick = () => {
+    setActiveFilters((prevActiveFilters) => !prevActiveFilters);
+  };
+  const handleFilterTypeChange = (event) => {
+    setFilterType(event.target.value);
+  };
 
 
   if (error && !loading) {
@@ -241,6 +246,7 @@ export default function OperationalDashboard() {
             onExportClick={onDownload}
             removeOptions={removeOptions}
             notifications={notifications}
+            onFilterClick={handleFilterClick}
           />
           <TabsBar
             currentTab={all ? 1 : open ? 2 : closed ? 3 : 1}
@@ -265,13 +271,17 @@ export default function OperationalDashboard() {
             }}
           />
           <div style={{ padding: "20px" }}>
-            <FilterOptions
-              setFilteredData={setFilteredData}
-              filterType={filterType}
-            />
+          {activeFilters && (
+        <FilterOptions
+          filterType={filterType}
+          onFilterTypeChange={handleFilterTypeChange}
+          setFilteredData={setFilteredData}
+          rows={rows}
+        />
+      )}
           </div>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <TableContainer sx={{ maxHeight: 540 }}>
+            <TableContainer sx={{ maxHeight: 640 }}>
               <Table
                 stickyHeader
                 aria-label="sticky table"
