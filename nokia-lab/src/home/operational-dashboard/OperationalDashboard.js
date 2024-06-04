@@ -26,7 +26,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
-import Tooltip from "@mui/material/Tooltip";  // Import Tooltip
+import Tooltip from "@mui/material/Tooltip";
 
 const databaseErrorMessage =
   "The database is currently unavailable 😞 Please try again later.";
@@ -34,7 +34,7 @@ const databaseErrorMessage =
 export default function OperationalDashboard() {
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [filteredData, setFilteredData] = useState([]);
   const [enableFilters, setEnableFilters] = useState(false);
   const [totalTickets, setTotalTickets] = useState(0);
@@ -57,8 +57,7 @@ export default function OperationalDashboard() {
   const [notifications, setNotifications] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
 
-  const [activeFilters, setActiveFilters] =  useState(false);
-
+  const [activeFilters, setActiveFilters] = useState(false);
 
   const handleEditClick = (row) => {
     if (row.days >= 0) {
@@ -153,7 +152,6 @@ export default function OperationalDashboard() {
     setFilteredData(filteredTickets);
   }, [all, open, closed, rows]);
 
-
   //notifications
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -164,20 +162,21 @@ export default function OperationalDashboard() {
         console.error("Error fetching current user:", error);
       }
     };
-  
+
     fetchCurrentUser();
   }, []);
-  
+
   useEffect(() => {
     const fetchUserAndSetNotifications = async () => {
       try {
         if (!currentUser) return;
-  
-        const username = currentUser.USERNAME; 
+
+        const username = currentUser.USERNAME;
         const notifications = rows
           .filter(
             (ticket) =>
-              ticket.minutes < 60 && ticket.minutes > 0 &&
+              ticket.minutes < 60 &&
+              ticket.minutes > 0 &&
               ticket.days == 0 &&
               ticket.hours == 0 &&
               ticket.ASSIGNEE == username
@@ -192,18 +191,16 @@ export default function OperationalDashboard() {
         console.error("Error fetching user or setting notifications:", error);
       }
     };
-  
+
     fetchUserAndSetNotifications();
   }, [rows, currentUser]);
-  
-  
+
   const handleFilterClick = () => {
     setActiveFilters((prevActiveFilters) => !prevActiveFilters);
   };
   const handleFilterTypeChange = (event) => {
     setFilterType(event.target.value);
   };
-
 
   if (error && !loading) {
     return (
@@ -271,17 +268,17 @@ export default function OperationalDashboard() {
             }}
           />
           <div style={{ padding: "20px" }}>
-          {activeFilters && (
-        <FilterOptions
-          filterType={filterType}
-          onFilterTypeChange={handleFilterTypeChange}
-          setFilteredData={setFilteredData}
-          rows={rows}
-        />
-      )}
+            {activeFilters && (
+              <FilterOptions
+                filterType={filterType}
+                onFilterTypeChange={handleFilterTypeChange}
+                setFilteredData={setFilteredData}
+                rows={rows}
+              />
+            )}
           </div>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <TableContainer sx={{ maxHeight: 640 }}>
+            <TableContainer sx={{ maxHeight: 620 }}>
               <Table
                 stickyHeader
                 aria-label="sticky table"
@@ -293,8 +290,9 @@ export default function OperationalDashboard() {
                     {columns.map((column) => (
                       <TableCell
                         key={column.id}
+                        size="small"
                         align={column.align}
-                        style={{ minWidth: column.minWidth }}
+                        style={{ minWidth: column.minWidth, height: 1 }}
                       >
                         {column.label}
                       </TableCell>
@@ -391,30 +389,39 @@ export default function OperationalDashboard() {
 
                           return (
                             <TableCell key={column.id} align={column.align}>
-                            {column.id === "TIME_REMAINING" && isClosed ? (
-                              <span style={{ backgroundColor: "gray", color: "white", borderRadius: "4px", padding: "5px" }}>CLOSED</span>
-                            ) : (
-                              column.id === "TIME_REMAINING" ? (
-                                <span style={{ 
-                                  backgroundColor: isClosed ? "gray" : "green", 
-                                  color: "white", 
-                                  borderRadius: "4px", 
-                                  padding: "10px", 
-                                  display: "inline-block", 
-                                  minWidth: "100px", 
-                                  textAlign: "center", 
-                                }}>
+                              {column.id === "TIME_REMAINING" && isClosed ? (
+                                <span
+                                  style={{
+                                    backgroundColor: "gray",
+                                    color: "white",
+                                    borderRadius: "4px",
+                                    padding: "5px",
+                                  }}
+                                >
+                                  CLOSED
+                                </span>
+                              ) : column.id === "TIME_REMAINING" ? (
+                                <span
+                                  style={{
+                                    backgroundColor: isClosed
+                                      ? "gray"
+                                      : "green",
+                                    color: "white",
+                                    borderRadius: "4px",
+                                    padding: "3px",
+                                    display: "inline-block",
+                                    minWidth: "100px",
+                                    textAlign: "center",
+                                  }}
+                                >
                                   {`${row["days"]} days, ${row["hours"]}:${row["minutes"]}:${row["seconds"]}`}
                                 </span>
+                              ) : column.format && typeof value === "number" ? (
+                                column.format(value)
                               ) : (
-                                column.format && typeof value === "number" ? (
-                                  column.format(value)
-                                ) : (
-                                  value
-                                )
-                              )
-                            )}
-                          </TableCell>
+                                value
+                              )}
+                            </TableCell>
                           );
                         })}
                       </TableRow>
@@ -423,13 +430,14 @@ export default function OperationalDashboard() {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[25, 40, 100]}
               component="div"
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              sx={{ padding: 0, height: 1 }}
             />
           </Paper>
           <TicketCount value={totalTickets} />
