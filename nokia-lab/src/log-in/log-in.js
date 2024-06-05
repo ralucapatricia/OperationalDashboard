@@ -18,8 +18,8 @@ const Login = () => {
       if (response.data === "Success") {
         navigate("/homepage");
       } else {
-        setError(response.data.error);
-        alert(response.data.error);
+        setError(response.data.message);
+        alert(response.data.message);
       }
     } catch (error) {
       setError("An error occurred during login.");
