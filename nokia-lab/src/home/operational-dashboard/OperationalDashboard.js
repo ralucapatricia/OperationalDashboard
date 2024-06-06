@@ -244,6 +244,7 @@ export default function OperationalDashboard() {
             removeOptions={removeOptions}
             notifications={notifications}
             onFilterClick={handleFilterClick}
+            activeFilters={activeFilters}
           />
           <TabsBar
             currentTab={all ? 1 : open ? 2 : closed ? 3 : 1}
@@ -277,7 +278,7 @@ export default function OperationalDashboard() {
               />
             )}
           </div>
-          <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <Paper sx={{ width: "100%", overflow: "hidden" }} className="TableContainer">
             <TableContainer sx={{ maxHeight: 620 }}>
               <Table
                 stickyHeader

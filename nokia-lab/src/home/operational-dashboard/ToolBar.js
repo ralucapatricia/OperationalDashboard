@@ -7,13 +7,19 @@ import HomeIcon from "@mui/icons-material/Home";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Button from "@mui/material/Button";
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 import Notifications from "./Notifications";
 import { Link } from "react-router-dom";
 import "./ToolBar.css";
 
-export default function ToolBar({ onExportClick, removeOptions, notifications, onFilterClick }) {
+export default function ToolBar({
+  onExportClick,
+  removeOptions,
+  notifications,
+  onFilterClick,
+  activeFilters,
+}) {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -87,7 +93,12 @@ export default function ToolBar({ onExportClick, removeOptions, notifications, o
                 sx={{ mr: 2 }}
                 onClick={onFilterClick} // Handler for filter button click
               >
-                <FilterAltIcon style={{ color: "#001F67", marginTop: "9px" }} />
+                <FilterAltIcon
+                  style={{
+                    color: activeFilters ? "white" : "#001F67",
+                    marginTop: "9px",
+                  }}
+                />
               </IconButton>
               <IconButton
                 edge="start"

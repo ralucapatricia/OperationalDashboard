@@ -1,18 +1,24 @@
 .ticket-count-container {
-    display: flex;
-    align-items: center;  
-    justify-content: center; 
-    text-align: center; 
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  z-index: 999;
 }
 
 .ticket-count {
-  color: #001F67 ;
+  color: #001f67;
 }
 
-.number{
-    margin-left: 10px;
-    color: #3E68A3;
+.number {
+  margin-left: 10px;
+  color: #3e68a3;
 }

@@ -14,6 +14,7 @@
   font-weight: 700 !important; 
   box-shadow: 0px 4px 4px -4px rgba(0, 0, 0, 0.2); 
   padding: 0 !important;
+  height: 100% !important;
 }
 
 .MuiTableRow-root:nth-of-type(even) {
@@ -29,6 +30,7 @@
   border-bottom: 1px solid #3E68A3 !important; 
   border-right: 1px solid #3E68A3 !important; 
   white-space: nowrap;
+  height: 100% !important;
 }
 
 .MuiTableCell-body {
@@ -36,6 +38,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
   font-size: 16px !important;
   padding: 0 !important;
+  height: 100% !important;
 }
 
 .MuiTableCell-head {
@@ -86,4 +89,8 @@
 .tabsbar {
   padding: 0;
   /* height: 12px; */
+}
+
+.TableContainer {
+  height: 100%;
 }
