@@ -27,9 +27,10 @@ body {
   
    .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     min-height: 100vh;
     background-color: rgba(255, 255, 255, 0.5); /* Adjust opacity for more transparency */
     padding: 20px;
@@ -43,6 +44,11 @@ body {
     margin: 0 auto; /* Center the container horizontally */
   }
   
+.container:nth-child(*) {
+  flex-grow: 0.5;
+  width: 40%;
+}
+
   .buttons-container {
     display: flex;
     justify-content: center; /* Așază butoanele pe mijloc pe axa orizontală */
@@ -93,3 +99,28 @@ body {
     margin-top: 50px; /* Spațiu de la marginea de sus a paginii */
   }
   
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+.filters-container {
+  display: flex;
+  gap: 10px; /* Adjust gap between filters as needed */
+  margin-bottom: 20px; /* Reduce margin if needed */
+}
+
+.title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 40px;
+  color: #072636;
+}
+
+
+.menu-button {
+  position: absolute;
+  right: 20px;
+}
+
