@@ -16,12 +16,17 @@ export default function LoadingSpinner() {
       }}
     >
       <CircularProgress />
-      <div style={{
-        fontSize: "34px",
-        fontWeight: "bold",
-        color: "#001F67",
-        marginTop:"20px",
-      }}>View Operational Dashboard...</div>
+      <div
+        style={{
+          fontSize: "34px",
+          fontWeight: "bold",
+          color: "#001F67",
+          marginTop: "20px",
+        }}
+      >
+        View Operational Dashboard...
+      </div>
+
     </Box>
   );
 }

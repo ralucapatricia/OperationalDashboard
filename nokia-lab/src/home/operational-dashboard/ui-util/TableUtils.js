@@ -1,5 +1,12 @@
 export const columns = [
   {
+    id: "EDIT",
+    label: "Editing",
+    minWidth: 170,
+    align: "right",
+    format: (value) => value.toLocaleString("en-US"),
+  },
+  {
     id: "TIME_REMAINING",
     label: "Time remaining",
     minWidth: 170,
@@ -205,7 +212,7 @@ export const columns = [
  export  const AssigneeOptions = [
     { title: "Alice Johnson" },
     { title: "Bob Williams" },
-    { title: "Carl S." },
+    { title: "JohnDoe" },
   ];
  export const projectOptions = [
     { title: "Project Gamma" },
