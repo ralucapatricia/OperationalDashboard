@@ -1,5 +1,3 @@
-KPI Guardian
-Overview
 KPI Guardian is a full-stack web application designed for monitoring key performance indicators (KPIs) of telecommunications networks. The application is built using JavaScript, React, PHP, and MySQL.
 
 Features
