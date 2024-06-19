@@ -250,6 +250,7 @@ const Grafice = () => {
 
   return (
     <>
+    <div className = "bg2">
     <div className = "header-container">  
       <h2 className="title" >Grafice</h2>
       <BasicMenu />
@@ -279,16 +280,6 @@ const Grafice = () => {
                 />
               </DemoContainer>
             </LocalizationProvider>
-
-
-            {/* <Autocomplete
-              disablePortal
-              id="time-span"
-              options={options.timeSpanFilter}
-              sx={{ width: 150 }}
-              renderInput={(params) => <TextField {...params} label="Time Span" />}
-              onChange={(event, newValue) => handleFilterChange('timeSpan', newValue)}
-            /> */}
 
             <Autocomplete
               disablePortal
@@ -441,6 +432,7 @@ const Grafice = () => {
           <PopUp openData={openData} handleClose={handleClose} />
         </>
       )}
+      </div>
     </>
   );
 };
