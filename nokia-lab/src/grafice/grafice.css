@@ -1,0 +1,122 @@
+
+  .bg2{
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url("../../public/img/1fundal.jpg") no-repeat center center fixed;
+    background-size: cover;
+  }
+ 
+  .nav-button {
+    background-color: rgba(255, 255, 255, 0.5); 
+    border: none; 
+    color: #333; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    transition: background-color 0.3s, box-shadow 0.3s; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    margin: 0 30px; 
+  }
+
+  .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.8); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
+  }
+  
+  
+   .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    min-height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5); 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+        margin-top: 20px; 
+
+    width: 90%; 
+    max-width: maximum; 
+    margin: 0 auto;
+  }
+  
+.container:nth-child(*) {
+  flex-grow: 0.5;
+  width: 40%;
+}
+
+  .buttons-container {
+    display: flex;
+    justify-content: center; 
+    margin-top: 20px;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .pie-chart-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    text-align: center; 
+    margin-top: 50px; 
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+.filters-container {
+  display: flex;
+  gap: 10px; 
+  margin-bottom: 20px; 
+}
+
+.title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 40px;
+  color: #072636;
+}
+
+
+.menu-button {
+  position: absolute;
+  right: 20px;
+}
+
